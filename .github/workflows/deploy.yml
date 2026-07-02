@@ -1,0 +1,24 @@
+name: Deploy WordPress theme
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "wp-theme/europe-ua/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload theme via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: "wp-theme/europe-ua/*"
+          target: ${{ secrets.DEPLOY_PATH }}
+          strip_components: 2
