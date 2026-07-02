@@ -1,93 +1,258 @@
 /* ==========================================================
    Громада — логіка прототипу
    Дані демонстраційні; у бойовій версії їх віддає API/CMS.
+   Підтримка двох мов інтерфейсу: uk / en.
    ========================================================== */
+
+// ---------- Тексти інтерфейсу ----------
+
+const STRINGS = {
+  uk: {
+    tabUkraine: "Україна",
+    tabHere: "Тут",
+    feedUpdated: "Стрічка · оновлено щойно",
+    bridgeTitle: "Корисне у вашій країні",
+    localNews: "Місцеві новини",
+    footer: "Громада · прототип · дані демонстраційні",
+    themeToggle: "Перемкнути тему",
+    langToggle: "Switch to English",
+    langLabel: "EN",
+    checkedPrefix: "перевірено",
+    updatedBadge: "правила змінились",
+    docTitle: "europe.ua — новини та життя в Європі",
+    docDescription: "Новини з України та практичні гіди для українців у Європі",
+  },
+  en: {
+    tabUkraine: "Ukraine",
+    tabHere: "Here",
+    feedUpdated: "Feed · updated just now",
+    bridgeTitle: "Useful in your country",
+    localNews: "Local news",
+    footer: "Hromada · prototype · demo data",
+    themeToggle: "Toggle theme",
+    langToggle: "Перемкнути на українську",
+    langLabel: "UA",
+    checkedPrefix: "checked",
+    updatedBadge: "rules changed",
+    docTitle: "europe.ua — news and life in Europe",
+    docDescription: "News from Ukraine and practical guides for Ukrainians in Europe",
+  },
+};
 
 // ---------- Демо-дані ----------
 
 const UKRAINE_NEWS = [
-  { title: "Головна новина дня: великий заголовок, який видно одразу", tag: "Головне", time: "12 хв тому", major: true, emoji: "🇺🇦" },
-  { title: "Кабмін ухвалив нову програму підтримки — що зміниться", tag: "Політика", time: "34 хв тому", emoji: "🏛️" },
-  { title: "Енергетики попереджають про планові роботи у трьох областях", tag: "Суспільство", time: "1 год тому", emoji: "⚡" },
-  { title: "Гривня та курс: короткий підсумок тижня", tag: "Економіка", time: "2 год тому", emoji: "📊" },
-  { title: "Культурна подія тижня: фестиваль повертається до Львова", tag: "Культура", time: "3 год тому", emoji: "🎭" },
+  { title: { uk: "Головна новина дня: великий заголовок, який видно одразу", en: "Top story of the day: a big headline you see right away" }, tag: { uk: "Головне", en: "Top" }, time: { uk: "12 хв тому", en: "12 min ago" }, major: true, emoji: "🇺🇦" },
+  { title: { uk: "Кабмін ухвалив нову програму підтримки — що зміниться", en: "Cabinet approves new support programme — what changes" }, tag: { uk: "Політика", en: "Politics" }, time: { uk: "34 хв тому", en: "34 min ago" }, emoji: "🏛️" },
+  { title: { uk: "Енергетики попереджають про планові роботи у трьох областях", en: "Power utilities warn of scheduled works in three regions" }, tag: { uk: "Суспільство", en: "Society" }, time: { uk: "1 год тому", en: "1h ago" }, emoji: "⚡" },
+  { title: { uk: "Гривня та курс: короткий підсумок тижня", en: "Hryvnia and exchange rate: a short weekly recap" }, tag: { uk: "Економіка", en: "Economy" }, time: { uk: "2 год тому", en: "2h ago" }, emoji: "📊" },
+  { title: { uk: "Культурна подія тижня: фестиваль повертається до Львова", en: "Cultural event of the week: the festival returns to Lviv" }, tag: { uk: "Культура", en: "Culture" }, time: { uk: "3 год тому", en: "3h ago" }, emoji: "🎭" },
 ];
+
+const COUNTRY_ORDER = ["de", "pl", "eu", "cz", "gb", "es", "it", "nl"];
 
 const HUBS = {
   de: {
-    label: "Німеччина",
+    label: { uk: "Німеччина", en: "Germany" },
     hint: "DE",
-    intro: "Життя в Німеччині: документи, Jobcenter, школи — покроково і з датами перевірки.",
-    guidesFirst: true, // німецький хаб — довідник-first
+    intro: { uk: "Життя в Німеччині: документи, Jobcenter, школи — покроково і з датами перевірки.", en: "Life in Germany: paperwork, Jobcenter, schools — step by step, with review dates." },
+    guidesFirst: true,
     guides: [
-      { term: "Anmeldung", title: "реєстрація за місцем проживання", desc: "Куди йти, які документи, скільки чекати термін.", checked: "06.2026", updated: true },
-      { term: "§24", title: "статус тимчасового захисту і що далі", desc: "Продовження, перехід на інші типи дозволів.", checked: "06.2026", updated: false },
-      { term: "Jobcenter", title: "виплати та пошук роботи", desc: "Bürgergeld, курси мови, визнання дипломів.", checked: "05.2026", updated: false },
-      { term: "Kita і школа", title: "як записати дитину", desc: "Черги, документи, мовна підтримка для дітей.", checked: "06.2026", updated: false },
-      { term: "Krankenkasse", title: "медичне страхування", desc: "Вибір каси, запис до лікаря, невідкладна допомога.", checked: "04.2026", updated: false },
+      { term: "Anmeldung", title: { uk: "реєстрація за місцем проживання", en: "registering your address" }, desc: { uk: "Куди йти, які документи, скільки чекати термін.", en: "Where to go, which documents, how long it takes." }, checked: { uk: "06.2026", en: "06.2026" }, updated: true },
+      { term: "§24", title: { uk: "статус тимчасового захисту і що далі", en: "temporary protection status and what's next" }, desc: { uk: "Продовження, перехід на інші типи дозволів.", en: "Renewal, switching to other permit types." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
+      { term: "Jobcenter", title: { uk: "виплати та пошук роботи", en: "benefits and job search" }, desc: { uk: "Bürgergeld, курси мови, визнання дипломів.", en: "Bürgergeld, language courses, recognition of diplomas." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Kita і школа", title: { uk: "як записати дитину", en: "enrolling a child" }, desc: { uk: "Черги, документи, мовна підтримка для дітей.", en: "Waiting lists, documents, language support for kids." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
+      { term: "Krankenkasse", title: { uk: "медичне страхування", en: "health insurance" }, desc: { uk: "Вибір каси, запис до лікаря, невідкладна допомога.", en: "Choosing a fund, booking a doctor, emergency care." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: "Берлін розширює програму мовних курсів для дорослих", tag: "Німеччина", time: "сьогодні", emoji: "🇩🇪" },
-      { title: "Що зміниться у правилах оренди житла з липня", tag: "Житло", time: "вчора", emoji: "🏠" },
+      { title: { uk: "Берлін розширює програму мовних курсів для дорослих", en: "Berlin expands adult language course programme" }, tag: { uk: "Німеччина", en: "Germany" }, time: { uk: "сьогодні", en: "today" }, emoji: "🇩🇪" },
+      { title: { uk: "Що зміниться у правилах оренди житла з липня", en: "What changes in rental rules from July" }, tag: { uk: "Житло", en: "Housing" }, time: { uk: "вчора", en: "yesterday" }, emoji: "🏠" },
     ],
     bridge: [
-      { icon: "📄", title: "Документи", note: "перевірено: 06.2026" },
-      { icon: "💼", title: "Робота", note: "Jobcenter, дипломи" },
-      { icon: "🏫", title: "Школи й діти", note: "запис, мова" },
-      { icon: "📅", title: "Події поруч", note: "афіша громади" },
+      { icon: "📄", title: { uk: "Документи", en: "Documents" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
+      { icon: "💼", title: { uk: "Робота", en: "Work" }, note: { uk: "Jobcenter, дипломи", en: "Jobcenter, diplomas" } },
+      { icon: "🏫", title: { uk: "Школи й діти", en: "Schools & kids" }, note: { uk: "запис, мова", en: "enrollment, language" } },
+      { icon: "📅", title: { uk: "Події поруч", en: "Nearby events" }, note: { uk: "афіша громади", en: "community listings" } },
     ],
   },
 
   pl: {
-    label: "Польща",
+    label: { uk: "Польща", en: "Poland" },
     hint: "PL",
-    intro: "Життя в Польщі: новини громади, робота та все про поїздки додому.",
-    guidesFirst: false, // польський хаб — новини та сервіси-first
+    intro: { uk: "Життя в Польщі: новини громади, робота та все про поїздки додому.", en: "Life in Poland: community news, work and everything about trips home." },
+    guidesFirst: false,
     guides: [
-      { term: "PESEL UKR", title: "статус і що він дає", desc: "Продовження спецзакону, права, виплати.", checked: "06.2026", updated: true },
-      { term: "Поїздка в Україну", title: "кордон зараз", desc: "Черги на переходах, перевізники, що можна везти.", checked: "цього тижня", updated: false },
-      { term: "Робота", title: "легальне працевлаштування", desc: "Umowa o pracę чи zlecenie: різниця і пастки.", checked: "05.2026", updated: false },
-      { term: "Школа", title: "запис дитини та іспити", desc: "Обов'язковість навчання, українські класи.", checked: "06.2026", updated: false },
+      { term: "PESEL UKR", title: { uk: "статус і що він дає", en: "status and what it grants" }, desc: { uk: "Продовження спецзакону, права, виплати.", en: "Special law renewal, rights, benefits." }, checked: { uk: "06.2026", en: "06.2026" }, updated: true },
+      { term: "Поїздка в Україну", title: { uk: "кордон зараз", en: "the border right now" }, desc: { uk: "Черги на переходах, перевізники, що можна везти.", en: "Crossing queues, carriers, what you can bring." }, checked: { uk: "цього тижня", en: "this week" }, updated: false },
+      { term: "Робота", title: { uk: "легальне працевлаштування", en: "legal employment" }, desc: { uk: "Umowa o pracę чи zlecenie: різниця і пастки.", en: "Umowa o pracę vs zlecenie: the difference and pitfalls." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Школа", title: { uk: "запис дитини та іспити", en: "enrollment and exams" }, desc: { uk: "Обов'язковість навчання, українські класи.", en: "Compulsory schooling, Ukrainian classes." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
     ],
     news: [
-      { title: "На переході Медика — Шегині відновили рух: деталі", tag: "Кордон", time: "2 год тому", emoji: "🚌" },
-      { title: "Варшава: ярмарок вакансій для українців цієї суботи", tag: "Робота", time: "сьогодні", emoji: "💼" },
-      { title: "Сейм розглядає зміни до спецзакону — що відомо", tag: "Польща", time: "вчора", emoji: "🏛️" },
+      { title: { uk: "На переході Медика — Шегині відновили рух: деталі", en: "Traffic resumed at the Medyka–Shehyni crossing: details" }, tag: { uk: "Кордон", en: "Border" }, time: { uk: "2 год тому", en: "2h ago" }, emoji: "🚌" },
+      { title: { uk: "Варшава: ярмарок вакансій для українців цієї суботи", en: "Warsaw: job fair for Ukrainians this Saturday" }, tag: { uk: "Робота", en: "Work" }, time: { uk: "сьогодні", en: "today" }, emoji: "💼" },
+      { title: { uk: "Сейм розглядає зміни до спецзакону — що відомо", en: "Sejm reviews changes to the special law — what's known" }, tag: { uk: "Польща", en: "Poland" }, time: { uk: "вчора", en: "yesterday" }, emoji: "🏛️" },
     ],
     bridge: [
-      { icon: "🚌", title: "Поїздка додому", note: "кордон, перевізники" },
-      { icon: "💼", title: "Робота", note: "вакансії, договори" },
-      { icon: "📄", title: "PESEL UKR", note: "перевірено: 06.2026" },
-      { icon: "📅", title: "Події поруч", note: "афіша громади" },
+      { icon: "🚌", title: { uk: "Поїздка додому", en: "Trip home" }, note: { uk: "кордон, перевізники", en: "border, carriers" } },
+      { icon: "💼", title: { uk: "Робота", en: "Work" }, note: { uk: "вакансії, договори", en: "jobs, contracts" } },
+      { icon: "📄", title: { uk: "PESEL UKR", en: "PESEL UKR" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
+      { icon: "📅", title: { uk: "Події поруч", en: "Nearby events" }, note: { uk: "афіша громади", en: "community listings" } },
     ],
   },
 
   eu: {
-    label: "Інша країна ЄС",
-    hint: "ЄС",
-    intro: "Загальне для всіх у ЄС: тимчасовий захист, банки, консульства, поїздки додому.",
+    label: { uk: "Інша країна ЄС", en: "Other EU country" },
+    hint: { uk: "ЄС", en: "EU" },
+    intro: { uk: "Загальне для всіх у ЄС: тимчасовий захист, банки, консульства, поїздки додому.", en: "General info for everyone in the EU: temporary protection, banks, consulates, trips home." },
     guidesFirst: true,
     guides: [
-      { term: "Тимчасовий захист", title: "права в усіх країнах ЄС", desc: "Що гарантує директива і до якої дати.", checked: "06.2026", updated: false },
-      { term: "Банки й перекази", title: "рахунки та гроші в Україну", desc: "Відкриття рахунку, комісії, ліміти.", checked: "05.2026", updated: false },
-      { term: "Консульства", title: "документи за кордоном", desc: "Паспорти, довіреності, записи в чергу.", checked: "06.2026", updated: false },
-      { term: "Переїзд між країнами", title: "зміна країни захисту", desc: "Чи можна і як переоформити статус.", checked: "04.2026", updated: false },
+      { term: "Тимчасовий захист", title: { uk: "права в усіх країнах ЄС", en: "rights across the EU" }, desc: { uk: "Що гарантує директива і до якої дати.", en: "What the directive guarantees and until when." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
+      { term: "Банки й перекази", title: { uk: "рахунки та гроші в Україну", en: "accounts and money transfers to Ukraine" }, desc: { uk: "Відкриття рахунку, комісії, ліміти.", en: "Opening an account, fees, limits." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Консульства", title: { uk: "документи за кордоном", en: "documents abroad" }, desc: { uk: "Паспорти, довіреності, записи в чергу.", en: "Passports, powers of attorney, queue booking." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
+      { term: "Переїзд між країнами", title: { uk: "зміна країни захисту", en: "changing your host country" }, desc: { uk: "Чи можна і як переоформити статус.", en: "Whether and how to transfer your status." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: "Рада ЄС обговорює продовження тимчасового захисту", tag: "Європа", time: "сьогодні", emoji: "🇪🇺" },
+      { title: { uk: "Рада ЄС обговорює продовження тимчасового захисту", en: "EU Council discusses extending temporary protection" }, tag: { uk: "Європа", en: "Europe" }, time: { uk: "сьогодні", en: "today" }, emoji: "🇪🇺" },
     ],
     bridge: [
-      { icon: "🛡️", title: "Тимчасовий захист", note: "права в ЄС" },
-      { icon: "🏦", title: "Банки", note: "рахунки, перекази" },
-      { icon: "🛂", title: "Консульства", note: "документи" },
-      { icon: "🚌", title: "Поїздка додому", note: "маршрути" },
+      { icon: "🛡️", title: { uk: "Тимчасовий захист", en: "Temporary protection" }, note: { uk: "права в ЄС", en: "rights in the EU" } },
+      { icon: "🏦", title: { uk: "Банки", en: "Banks" }, note: { uk: "рахунки, перекази", en: "accounts, transfers" } },
+      { icon: "🛂", title: { uk: "Консульства", en: "Consulates" }, note: { uk: "документи", en: "documents" } },
+      { icon: "🚌", title: { uk: "Поїздка додому", en: "Trip home" }, note: { uk: "маршрути", en: "routes" } },
+    ],
+  },
+
+  cz: {
+    label: { uk: "Чехія", en: "Czech Republic" },
+    hint: "CZ",
+    intro: { uk: "Життя в Чехії: тимчасовий захист, реєстрація, робота та школи — головне по кроках.", en: "Life in Czechia: temporary protection, registration, work and schools — the essentials, step by step." },
+    guidesFirst: true,
+    guides: [
+      { term: "Dočasná ochrana", title: { uk: "тимчасовий захист і продовження", en: "temporary protection and renewal" }, desc: { uk: "Як подовжити статус, які документи потрібні.", en: "How to renew status and which documents are required." }, checked: { uk: "06.2026", en: "06.2026" }, updated: true },
+      { term: "Registrace pobytu", title: { uk: "реєстрація місця проживання", en: "registration of residence" }, desc: { uk: "Куди звертатися після переїзду на нову адресу.", en: "Where to report after moving to a new address." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Úřad práce", title: { uk: "працевлаштування та допомога", en: "employment and benefits" }, desc: { uk: "Пошук роботи, мовні курси, підтвердження освіти.", en: "Job search, language courses, recognition of education." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Škola", title: { uk: "запис дитини до школи", en: "enrolling a child in school" }, desc: { uk: "Черги, документи, адаптаційні групи.", en: "Waiting lists, documents, adaptation classes." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
+      { term: "Zdravotní pojištění", title: { uk: "медичне страхування", en: "health insurance" }, desc: { uk: "Вибір страхової компанії, візити до лікаря.", en: "Choosing an insurer, doctor visits." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
+    ],
+    news: [
+      { title: { uk: "Прага розширює курси чеської мови для біженців", en: "Prague expands Czech language courses for refugees" }, tag: { uk: "Чехія", en: "Czechia" }, time: { uk: "сьогодні", en: "today" }, emoji: "🇨🇿" },
+      { title: { uk: "Зміни у виплатах гуманітарної допомоги з липня", en: "Changes to humanitarian benefit payments from July" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "вчора", en: "yesterday" }, emoji: "💶" },
+    ],
+    bridge: [
+      { icon: "📄", title: { uk: "Тимчасовий захист", en: "Temporary protection" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
+      { icon: "💼", title: { uk: "Робота", en: "Work" }, note: { uk: "Úřad práce, курси", en: "Úřad práce, courses" } },
+      { icon: "🏫", title: { uk: "Школи й діти", en: "Schools & kids" }, note: { uk: "запис, адаптація", en: "enrollment, adaptation" } },
+      { icon: "📅", title: { uk: "Події поруч", en: "Nearby events" }, note: { uk: "афіша громади", en: "community listings" } },
+    ],
+  },
+
+  gb: {
+    label: { uk: "Велика Британія", en: "United Kingdom" },
+    hint: "UK",
+    intro: { uk: "Життя у Великій Британії: візові схеми, Universal Credit, NHS і школи.", en: "Life in the UK: visa schemes, Universal Credit, the NHS and schools." },
+    guidesFirst: false,
+    guides: [
+      { term: "Homes for Ukraine", title: { uk: "продовження візової схеми", en: "visa scheme extension" }, desc: { uk: "Умови Ukraine Permission Extension Scheme.", en: "Terms of the Ukraine Permission Extension Scheme." }, checked: { uk: "06.2026", en: "06.2026" }, updated: true },
+      { term: "Universal Credit", title: { uk: "виплати та підтримка доходу", en: "benefits and income support" }, desc: { uk: "Як подати заявку, строки розгляду.", en: "How to apply, processing times." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "NHS", title: { uk: "реєстрація у лікаря", en: "registering with a GP" }, desc: { uk: "Як знайти GP surgery поруч і записатися.", en: "How to find a nearby GP surgery and register." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "School admissions", title: { uk: "запис дитини до школи", en: "school enrollment" }, desc: { uk: "Через місцеву раду (local council), терміни подачі.", en: "Via the local council, application deadlines." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
+    ],
+    news: [
+      { title: { uk: "Уряд Британії продовжив термін дії візової схеми", en: "UK government extends the visa scheme deadline" }, tag: { uk: "Британія", en: "UK" }, time: { uk: "сьогодні", en: "today" }, emoji: "🇬🇧" },
+      { title: { uk: "Зміни у виплаті Universal Credit для новоприбулих", en: "Changes to Universal Credit for new arrivals" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "2 год тому", en: "2h ago" }, emoji: "💷" },
+      { title: { uk: "Лондон: ярмарок вакансій для українців цього тижня", en: "London: job fair for Ukrainians this week" }, tag: { uk: "Робота", en: "Work" }, time: { uk: "вчора", en: "yesterday" }, emoji: "💼" },
+    ],
+    bridge: [
+      { icon: "🛂", title: { uk: "Візова схема", en: "Visa scheme" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
+      { icon: "💷", title: { uk: "Виплати", en: "Benefits" }, note: { uk: "Universal Credit", en: "Universal Credit" } },
+      { icon: "🏥", title: { uk: "NHS", en: "NHS" }, note: { uk: "лікар, реєстрація", en: "GP, registration" } },
+      { icon: "🏫", title: { uk: "Школи й діти", en: "Schools & kids" }, note: { uk: "запис, ради", en: "enrollment, councils" } },
+    ],
+  },
+
+  es: {
+    label: { uk: "Іспанія", en: "Spain" },
+    hint: "ES",
+    intro: { uk: "Життя в Іспанії: тимчасовий захист, empadronamiento, робота та школа.", en: "Life in Spain: temporary protection, empadronamiento, work and school." },
+    guidesFirst: true,
+    guides: [
+      { term: "Protección temporal", title: { uk: "продовження статусу захисту", en: "protection status renewal" }, desc: { uk: "Терміни, документи, куди подавати.", en: "Deadlines, documents, where to apply." }, checked: { uk: "06.2026", en: "06.2026" }, updated: true },
+      { term: "Empadronamiento", title: { uk: "реєстрація за місцем проживання", en: "municipal registration" }, desc: { uk: "Навіщо потрібна і як отримати в ayuntamiento.", en: "Why you need it and how to get it at the ayuntamiento." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "NIE", title: { uk: "ідентифікаційний номер іноземця", en: "foreigner ID number" }, desc: { uk: "Де оформити і навіщо він потрібен.", en: "Where to get it and why it's required." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Tarjeta sanitaria", title: { uk: "медична картка", en: "health card" }, desc: { uk: "Запис до лікаря, невідкладна допомога.", en: "Booking a doctor, emergency care." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
+    ],
+    news: [
+      { title: { uk: "Мадрид продовжує програму мовної адаптації", en: "Madrid extends the language adaptation programme" }, tag: { uk: "Іспанія", en: "Spain" }, time: { uk: "сьогодні", en: "today" }, emoji: "🇪🇸" },
+      { title: { uk: "Зміни у процедурі продовження захисту з липня", en: "Changes to the protection renewal procedure from July" }, tag: { uk: "Статус", en: "Status" }, time: { uk: "вчора", en: "yesterday" }, emoji: "📄" },
+    ],
+    bridge: [
+      { icon: "📄", title: { uk: "Захист", en: "Protection" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
+      { icon: "🏠", title: { uk: "Empadronamiento", en: "Empadronamiento" }, note: { uk: "реєстрація адреси", en: "address registration" } },
+      { icon: "🏥", title: { uk: "Медицина", en: "Healthcare" }, note: { uk: "tarjeta sanitaria", en: "tarjeta sanitaria" } },
+      { icon: "💼", title: { uk: "Робота", en: "Work" }, note: { uk: "вакансії, NIE", en: "jobs, NIE" } },
+    ],
+  },
+
+  it: {
+    label: { uk: "Італія", en: "Italy" },
+    hint: "IT",
+    intro: { uk: "Життя в Італії: тимчасовий захист, permesso di soggiorno, медицина та школа.", en: "Life in Italy: temporary protection, permesso di soggiorno, healthcare and school." },
+    guidesFirst: true,
+    guides: [
+      { term: "Protezione temporanea", title: { uk: "продовження статусу", en: "status renewal" }, desc: { uk: "Строки дії та порядок продовження.", en: "Validity period and renewal process." }, checked: { uk: "06.2026", en: "06.2026" }, updated: true },
+      { term: "Permesso di soggiorno", title: { uk: "дозвіл на проживання", en: "residence permit" }, desc: { uk: "Де подати заявку і скільки чекати.", en: "Where to apply and how long it takes." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Codice fiscale", title: { uk: "податковий код", en: "tax code" }, desc: { uk: "Навіщо потрібен і як отримати.", en: "What it's for and how to get one." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "SSN", title: { uk: "реєстрація в системі охорони здоров'я", en: "national health service registration" }, desc: { uk: "Вибір лікаря, безкоштовна допомога.", en: "Choosing a doctor, free care." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
+    ],
+    news: [
+      { title: { uk: "Рим спрощує подачу документів на permesso", en: "Rome simplifies permesso document submission" }, tag: { uk: "Італія", en: "Italy" }, time: { uk: "сьогодні", en: "today" }, emoji: "🇮🇹" },
+      { title: { uk: "Ярмарок вакансій для українців у Мілані", en: "Job fair for Ukrainians in Milan" }, tag: { uk: "Робота", en: "Work" }, time: { uk: "вчора", en: "yesterday" }, emoji: "💼" },
+    ],
+    bridge: [
+      { icon: "📄", title: { uk: "Захист", en: "Protection" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
+      { icon: "🪪", title: { uk: "Permesso", en: "Permesso" }, note: { uk: "дозвіл на проживання", en: "residence permit" } },
+      { icon: "🏥", title: { uk: "SSN", en: "SSN" }, note: { uk: "медична допомога", en: "healthcare" } },
+      { icon: "💼", title: { uk: "Робота", en: "Work" }, note: { uk: "вакансії, codice fiscale", en: "jobs, codice fiscale" } },
+    ],
+  },
+
+  nl: {
+    label: { uk: "Нідерланди", en: "Netherlands" },
+    hint: "NL",
+    intro: { uk: "Життя в Нідерландах: тимчасовий захист, BSN, житло та медична страховка.", en: "Life in the Netherlands: temporary protection, BSN, housing and health insurance." },
+    guidesFirst: true,
+    guides: [
+      { term: "Tijdelijke bescherming", title: { uk: "тимчасовий захист", en: "temporary protection" }, desc: { uk: "Продовження статусу та строки.", en: "Status renewal and deadlines." }, checked: { uk: "06.2026", en: "06.2026" }, updated: true },
+      { term: "BSN", title: { uk: "реєстраційний номер", en: "citizen service number" }, desc: { uk: "Де і як отримати, навіщо потрібен.", en: "Where and how to get it, why you need it." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Huisvesting", title: { uk: "житло та переселення", en: "housing and relocation" }, desc: { uk: "Муніципальне житло, черги, права.", en: "Municipal housing, waiting lists, rights." }, checked: { uk: "05.2026", en: "05.2026" }, updated: false },
+      { term: "Zorgverzekering", title: { uk: "медичне страхування", en: "health insurance" }, desc: { uk: "Обов'язкова страховка та як оформити.", en: "Mandatory insurance and how to arrange it." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
+    ],
+    news: [
+      { title: { uk: "Амстердам розширює програму мовних курсів", en: "Amsterdam expands its language course programme" }, tag: { uk: "Нідерланди", en: "Netherlands" }, time: { uk: "сьогодні", en: "today" }, emoji: "🇳🇱" },
+      { title: { uk: "Зміни у виплатах на проживання з липня", en: "Changes to housing allowance from July" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "вчора", en: "yesterday" }, emoji: "🏠" },
+    ],
+    bridge: [
+      { icon: "📄", title: { uk: "Захист", en: "Protection" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
+      { icon: "🪪", title: { uk: "BSN", en: "BSN" }, note: { uk: "реєстраційний номер", en: "citizen number" } },
+      { icon: "🏠", title: { uk: "Житло", en: "Housing" }, note: { uk: "муніципальне житло", en: "municipal housing" } },
+      { icon: "🏥", title: { uk: "Медицина", en: "Healthcare" }, note: { uk: "страховка", en: "insurance" } },
     ],
   },
 };
 
+// ---------- Переклад значень ----------
+
+function tx(val) {
+  if (val && typeof val === "object" && ("uk" in val || "en" in val)) {
+    return val[lang] || val.uk;
+  }
+  return val;
+}
+
 // ---------- Стан ----------
 
 let country = localStorage.getItem("hromada.country") || "de";
+let lang = localStorage.getItem("hromada.lang") || "uk";
 let activeTab = "ukraine";
 
 // ---------- Елементи ----------
@@ -97,16 +262,23 @@ const el = {
   countryLabel: document.getElementById("countryLabel"),
   countryMenu: document.getElementById("countryMenu"),
   themeBtn: document.getElementById("themeBtn"),
+  langBtn: document.getElementById("langBtn"),
+  langLabel: document.getElementById("langLabel"),
   hereHint: document.getElementById("hereHint"),
+  tabUkraineLabel: document.getElementById("tabUkraineLabel"),
+  tabHereLabel: document.getElementById("tabHereLabel"),
   tabs: document.querySelectorAll(".tab"),
   viewUkraine: document.getElementById("view-ukraine"),
   viewHere: document.getElementById("view-here"),
+  feedMeta: document.getElementById("feedMeta"),
   ukraineFeed: document.getElementById("ukraineFeed"),
+  bridgeTitle: document.getElementById("bridgeTitle"),
   bridgeGrid: document.getElementById("bridgeGrid"),
   hubIntro: document.getElementById("hubIntro"),
   hubGuides: document.getElementById("hubGuides"),
   hubFeed: document.getElementById("hubFeed"),
   hubNewsTitle: document.getElementById("hubNewsTitle"),
+  footerText: document.getElementById("footerText"),
 };
 
 // ---------- Рендер ----------
@@ -117,19 +289,19 @@ function newsCard(item) {
     <a href="#" class="card${major}">
       <div class="card__img" aria-hidden="true">${item.emoji}</div>
       <div>
-        <p class="card__title">${item.title}</p>
-        <p class="card__meta"><span class="card__tag">${item.tag}</span> · ${item.time}</p>
+        <p class="card__title">${tx(item.title)}</p>
+        <p class="card__meta"><span class="card__tag">${tx(item.tag)}</span> · ${tx(item.time)}</p>
       </div>
     </a>`;
 }
 
 function guideCard(g) {
   const updated = g.updated ? " guide--updated" : "";
-  const badge = g.updated ? "правила змінились" : `перевірено: ${g.checked}`;
+  const badge = g.updated ? STRINGS[lang].updatedBadge : `${STRINGS[lang].checkedPrefix}: ${tx(g.checked)}`;
   return `
     <div class="guide${updated}" role="button" tabindex="0">
-      <p class="guide__title"><code>${g.term}</code> — ${g.title}</p>
-      <p class="guide__desc">${g.desc}</p>
+      <p class="guide__title"><code>${g.term}</code> — ${tx(g.title)}</p>
+      <p class="guide__desc">${tx(g.desc)}</p>
       <div class="guide__meta"><span class="guide__badge">${badge}</span></div>
     </div>`;
 }
@@ -137,27 +309,52 @@ function guideCard(g) {
 function bridgeItem(b) {
   return `
     <button class="bridge__item" type="button">
-      <strong>${b.icon} ${b.title}</strong>
-      <span>${b.note}</span>
+      <strong>${b.icon} ${tx(b.title)}</strong>
+      <span>${tx(b.note)}</span>
     </button>`;
+}
+
+function renderCountryMenu() {
+  el.countryMenu.innerHTML = COUNTRY_ORDER.map(code => `
+    <li role="option" data-country="${code}" aria-selected="${code === country ? "true" : "false"}">${tx(HUBS[code].label)}</li>
+  `).join("");
+}
+
+function renderChrome() {
+  const s = STRINGS[lang];
+  document.documentElement.lang = lang === "en" ? "en" : "uk";
+  document.title = s.docTitle;
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.content = s.docDescription;
+
+  el.langLabel.textContent = s.langLabel;
+  el.langBtn.setAttribute("aria-label", s.langToggle);
+  el.themeBtn.setAttribute("aria-label", s.themeToggle);
+
+  el.tabUkraineLabel.textContent = s.tabUkraine;
+  el.tabHereLabel.textContent = s.tabHere;
+  el.feedMeta.textContent = s.feedUpdated;
+  el.bridgeTitle.textContent = s.bridgeTitle;
+  el.hubNewsTitle.textContent = s.localNews;
+  el.footerText.textContent = s.footer;
 }
 
 function render() {
   const hub = HUBS[country];
 
+  renderChrome();
+
   // Шапка й таби
-  el.countryLabel.textContent = hub.label;
-  el.hereHint.textContent = ` · ${hub.hint}`;
-  el.countryMenu.querySelectorAll("li").forEach(li => {
-    li.setAttribute("aria-selected", li.dataset.country === country ? "true" : "false");
-  });
+  el.countryLabel.textContent = tx(hub.label);
+  el.hereHint.textContent = ` · ${tx(hub.hint)}`;
+  renderCountryMenu();
 
   // Українська стрічка (спільна) + мостик у країновий хаб
   el.ukraineFeed.innerHTML = UKRAINE_NEWS.map(newsCard).join("");
   el.bridgeGrid.innerHTML = hub.bridge.map(bridgeItem).join("");
 
-  // Країновий хаб: у Німеччині довідник вище новин, у Польщі — навпаки
-  el.hubIntro.textContent = hub.intro;
+  // Країновий хаб: у деяких країнах довідник вище новин, в інших — навпаки
+  el.hubIntro.textContent = tx(hub.intro);
   el.hubGuides.innerHTML = hub.guides.map(guideCard).join("");
   el.hubFeed.innerHTML = hub.news.map(newsCard).join("");
 
@@ -231,6 +428,14 @@ if (savedTheme) {
 el.themeBtn.addEventListener("click", () => {
   const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   applyTheme(next);
+});
+
+// ---------- Мова ----------
+
+el.langBtn.addEventListener("click", () => {
+  lang = lang === "en" ? "uk" : "en";
+  localStorage.setItem("hromada.lang", lang);
+  render();
 });
 
 // ---------- Старт ----------

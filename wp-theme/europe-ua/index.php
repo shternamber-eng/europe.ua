@@ -19,24 +19,23 @@
           <span id="countryLabel">Німеччина</span>
           <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
         </button>
+        <button class="lang-btn" id="langBtn" aria-label="Switch to English">
+          <span id="langLabel">EN</span>
+        </button>
         <button class="theme-btn" id="themeBtn" aria-label="Перемкнути тему">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path class="icon-moon" d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>
           </svg>
         </button>
       </div>
-      <ul class="country-menu" id="countryMenu" role="listbox" hidden>
-        <li role="option" data-country="de">Німеччина</li>
-        <li role="option" data-country="pl">Польща</li>
-        <li role="option" data-country="eu">Інша країна ЄС</li>
-      </ul>
+      <ul class="country-menu" id="countryMenu" role="listbox" hidden></ul>
     </div>
   </header>
 
   <nav class="tabs" aria-label="Основні розділи">
     <div class="container tabs__inner">
-      <button class="tab is-active" data-tab="ukraine">Україна</button>
-      <button class="tab" data-tab="here">Тут<span class="tab__hint" id="hereHint"> · DE</span></button>
+      <button class="tab is-active" data-tab="ukraine"><span id="tabUkraineLabel">Україна</span></button>
+      <button class="tab" data-tab="here"><span id="tabHereLabel">Тут</span><span class="tab__hint" id="hereHint"> · DE</span></button>
     </div>
   </nav>
 
@@ -46,12 +45,12 @@
     <section id="view-ukraine" class="view">
       <div class="feed-meta">
         <span class="live-dot" aria-hidden="true"></span>
-        Стрічка · оновлено щойно
+        <span id="feedMeta">Стрічка · оновлено щойно</span>
       </div>
       <div id="ukraineFeed" class="feed"></div>
 
       <div class="bridge" id="bridgeCard">
-        <p class="bridge__title">Корисне у вашій країні</p>
+        <p class="bridge__title" id="bridgeTitle">Корисне у вашій країні</p>
         <div class="bridge__grid" id="bridgeGrid"></div>
       </div>
     </section>
@@ -68,7 +67,7 @@
 
   <footer class="footer">
     <div class="container">
-      <p>Громада · <?php bloginfo('name'); ?></p>
+      <p id="footerText">Громада · прототип · дані демонстраційні</p>
     </div>
   </footer>
 

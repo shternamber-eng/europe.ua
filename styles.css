@@ -148,6 +148,23 @@ body {
   cursor: pointer;
 }
 
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  font: 600 12px var(--font-body);
+  color: var(--text-2);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.lang-btn:hover { border-color: var(--text-3); }
+
 .country-menu {
   position: absolute;
   top: 52px;
