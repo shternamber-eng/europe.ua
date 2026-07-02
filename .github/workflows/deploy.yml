@@ -13,12 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Upload theme via SCP
-        uses: appleboy/scp-action@v0.1.7
+      - name: Upload theme via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: "wp-theme/europe-ua/*"
-          target: ${{ secrets.DEPLOY_PATH }}
-          strip_components: 2
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: wp-theme/europe-ua/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
