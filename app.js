@@ -49,7 +49,7 @@ const UKRAINE_NEWS = [
   { title: { uk: "Культурна подія тижня: фестиваль повертається до Львова", en: "Cultural event of the week: the festival returns to Lviv" }, tag: { uk: "Культура", en: "Culture" }, time: { uk: "3 год тому", en: "3h ago" }, emoji: "🎭" },
 ];
 
-const COUNTRY_ORDER = ["de", "pl", "eu", "cz", "gb", "es", "it", "nl"];
+const COUNTRY_ORDER = ["de", "pl", "cz", "gb", "es", "it", "nl", "eu"];
 
 const HUBS = {
   de: {
