@@ -1,0 +1,407 @@
+﻿@charset "UTF-8";
+/* ==========================================================
+   Громада — прототип медиа для українців у Європі
+   Mobile-first. Світла/темна тема через data-theme на <html>.
+   ========================================================== */
+
+:root {
+  --bg: #FBFAF7;
+  --surface: #FFFFFF;
+  --surface-2: #F2F0EA;
+  --text: #191C22;
+  --text-2: #5B6068;
+  --text-3: #8A8F98;
+  --border: #E4E1D8;
+  --accent: #1B4C9C;        /* глибокий синій — основний акцент */
+  --accent-soft: #E8EFFA;
+  --signal: #F2B705;        /* жовтий — тільки як сигнал: live, активний таб */
+  --danger: #B3382C;
+  --radius: 10px;
+  --font-display: "Unbounded", system-ui, sans-serif;
+  --font-body: "Golos Text", system-ui, -apple-system, sans-serif;
+}
+
+html[data-theme="dark"] {
+  --bg: #14161B;
+  --surface: #1C1F26;
+  --surface-2: #23262E;
+  --text: #EDEDE9;
+  --text-2: #A7ABB3;
+  --text-3: #767B84;
+  --border: #2C3039;
+  --accent: #7FA8E8;
+  --accent-soft: #1E2A40;
+  --signal: #E8B93B;
+  --danger: #D9695E;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ---------- Шапка ---------- */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.header__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo__mark {
+  position: relative;
+  width: 26px;
+  height: 18px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1b4c9c 0 50%, #f2b705 50% 100%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--border) 70%, transparent), 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.logo__mark::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #f2b705;
+  transform: translateX(-50%);
+  box-shadow:
+    -7px 0 #f2b705,
+    -4px 3px #f2b705,
+    0 4px #f2b705,
+    4px 3px #f2b705,
+    7px 0 #f2b705,
+    -4px -2px #f2b705,
+    4px -2px #f2b705;
+}
+
+.header__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.country-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 13px var(--font-body);
+  color: var(--text-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.country-btn:hover { border-color: var(--text-3); }
+
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: var(--text-2);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.country-menu {
+  position: absolute;
+  top: 52px;
+  right: 16px;
+  min-width: 180px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  overflow: hidden;
+  z-index: 30;
+}
+
+.country-menu li {
+  padding: 11px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.country-menu li:hover { background: var(--surface-2); }
+.country-menu li[aria-selected="true"] { color: var(--accent); font-weight: 600; }
+
+/* ---------- Таби ---------- */
+
+.tabs {
+  position: sticky;
+  top: 56px;
+  z-index: 19;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.tabs__inner { display: flex; }
+
+.tab {
+  flex: 1;
+  padding: 12px 0 10px;
+  font: 600 15px var(--font-body);
+  color: var(--text-3);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+}
+
+.tab.is-active {
+  color: var(--text);
+  border-bottom-color: var(--signal);
+}
+
+.tab__hint { font-weight: 400; color: var(--text-3); font-size: 13px; }
+
+/* ---------- Стрічка новин ---------- */
+
+.view { padding: 16px 0 32px; }
+
+.feed-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-3);
+  margin-bottom: 12px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot { animation: none; }
+}
+
+.feed { display: flex; flex-direction: column; gap: 10px; }
+
+.card {
+  display: flex;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover { border-color: var(--text-3); }
+
+.card__img {
+  flex-shrink: 0;
+  width: 84px;
+  height: 64px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  font-size: 22px;
+}
+
+.card__title {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.card--major .card__title { font-size: 17px; }
+
+.card__meta { font-size: 12.5px; color: var(--text-3); }
+
+.card__tag {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.card--urgent .card__tag { color: var(--danger); }
+
+/* ---------- Мостик «корисне у вашій країні» ---------- */
+
+.bridge {
+  margin-top: 24px;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.bridge__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.bridge__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.bridge__item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+}
+
+.bridge__item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.bridge__item span {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* ---------- Країновий хаб ---------- */
+
+.hub-intro {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.45;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 15px;
+  margin: 28px 0 12px;
+}
+
+.guides { display: flex; flex-direction: column; gap: 10px; }
+
+.guide {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.guide__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.guide__title code {
+  font-family: var(--font-body);
+  color: var(--accent);
+}
+
+.guide__desc {
+  font-size: 13.5px;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+
+.guide__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.guide__badge {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-weight: 500;
+}
+
+.guide--updated .guide__badge {
+  background: color-mix(in srgb, var(--signal) 18%, transparent);
+  color: var(--text);
+}
+
+/* ---------- Подвал ---------- */
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 20px 0 32px;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* ---------- Десктоп ---------- */
+
+@media (min-width: 720px) {
+  .card__img { width: 120px; height: 80px; }
+  .card--major .card__title { font-size: 19px; }
+  .bridge__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

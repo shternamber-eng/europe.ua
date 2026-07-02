@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+  <meta charset="<?php bloginfo('charset'); ?>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Новини з України та практичні гіди для українців у Європі">
+  <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="<?php echo esc_url(home_url('/')); ?>" class="logo">
+        <span class="logo__mark" aria-hidden="true"></span>
+        europe.ua
+      </a>
+      <div class="header__controls">
+        <button class="country-btn" id="countryBtn" aria-haspopup="listbox" aria-expanded="false">
+          <span id="countryLabel">Німеччина</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+        <button class="theme-btn" id="themeBtn" aria-label="Перемкнути тему">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path class="icon-moon" d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>
+          </svg>
+        </button>
+      </div>
+      <ul class="country-menu" id="countryMenu" role="listbox" hidden>
+        <li role="option" data-country="de">Німеччина</li>
+        <li role="option" data-country="pl">Польща</li>
+        <li role="option" data-country="eu">Інша країна ЄС</li>
+      </ul>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Основні розділи">
+    <div class="container tabs__inner">
+      <button class="tab is-active" data-tab="ukraine">Україна</button>
+      <button class="tab" data-tab="here">Тут<span class="tab__hint" id="hereHint"> · DE</span></button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Таб «Україна»: спільна стрічка для всіх країн -->
+    <section id="view-ukraine" class="view">
+      <div class="feed-meta">
+        <span class="live-dot" aria-hidden="true"></span>
+        Стрічка · оновлено щойно
+      </div>
+      <div id="ukraineFeed" class="feed"></div>
+
+      <div class="bridge" id="bridgeCard">
+        <p class="bridge__title">Корисне у вашій країні</p>
+        <div class="bridge__grid" id="bridgeGrid"></div>
+      </div>
+    </section>
+
+    <!-- Таб «Тут»: країновий хаб -->
+    <section id="view-here" class="view" hidden>
+      <div id="hubIntro" class="hub-intro"></div>
+      <div id="hubGuides" class="guides"></div>
+      <h2 class="section-title" id="hubNewsTitle">Місцеві новини</h2>
+      <div id="hubFeed" class="feed"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Громада · <?php bloginfo('name'); ?></p>
+    </div>
+  </footer>
+
+  <?php wp_footer(); ?>
+</body>
+</html>
