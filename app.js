@@ -58,21 +58,14 @@ const IMG = {
   brussels: "https://commons.wikimedia.org/wiki/Special:FilePath/European_Parliament_building_Brussels_1.jpg?width=480",
 };
 
-const SRC = {
-  euExtension: "https://frontliner.ua/en/support-for-ukrainian-refugees-in-the-eu/",
-  optOut: "https://visitukraine.today/blog/7819/temporary-protection-for-ukrainians-in-europe-in-2026-which-countries-are-accepting-refugees-and-what-you-need-to-know-about-the-conditions",
-  finance: "https://visitukraine.today/blog/8110/financial-assistance-for-ukrainians-in-europe-in-2026-how-much-do-different-countries-pay",
-  stats: "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Temporary_protection_for_persons_fleeing_Ukraine_-_monthly_statistics",
-};
-
-// ---------- Дані (реальні новини станом на 02.07.2026, джерела в полі source) ----------
+// ---------- Дані (реальні новини станом на 02.07.2026) ----------
 
 const UKRAINE_NEWS = [
-  { title: { uk: "Росія атакувала Київ 74 ракетами і 496 дронами: щонайменше 22 загиблих", en: "Russia attacked Kyiv with 74 missiles and 496 drones: at least 22 killed" }, tag: { uk: "Головне", en: "Top" }, time: { uk: "сьогодні", en: "today" }, major: true, image: IMG.kyiv, source: "https://www.aljazeera.com/news/2026/7/2/kyiv-attacked-after-ukraines-zelenskyy-warns-of-massive-russian-strike" },
-  { title: { uk: "Кабмін затвердив перший механізм експорту зброї", en: "Cabinet approves Ukraine's first weapons export mechanism" }, tag: { uk: "Політика", en: "Politics" }, time: { uk: "сьогодні", en: "today" }, image: IMG.rada, source: "https://www.forbes.com/sites/katyasoldak/2026/07/02/thursday-july-2-russias-war-on-ukraine-news-and-information-from-ukraine/" },
-  { title: { uk: "Україна терміново просить майже 40 союзників про ракети Patriot", en: "Ukraine urgently appeals to nearly 40 allies for Patriot interceptors" }, tag: { uk: "Оборона", en: "Defense" }, time: { uk: "сьогодні", en: "today" }, image: IMG.patriot, source: "https://www.forbes.com/sites/katyasoldak/2026/07/02/thursday-july-2-russias-war-on-ukraine-news-and-information-from-ukraine/" },
-  { title: { uk: "ЗСУ знеструмили 13 об'єктів електропостачання на окупованих територіях", en: "Ukraine's military knocked out 13 power stations in occupied territories" }, tag: { uk: "Війна", en: "War" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.pylons, source: "https://www.forbes.com/sites/katyasoldak/2026/07/02/thursday-july-2-russias-war-on-ukraine-news-and-information-from-ukraine/" },
-  { title: { uk: "Далекобійний удар по НПЗ «Лукойл» у Кстово, Нижегородська область", en: "Long-range strike hits the Lukoil refinery in Kstovo, Nizhny Novgorod region" }, tag: { uk: "Війна", en: "War" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.refinery, source: "https://www.forbes.com/sites/katyasoldak/2026/07/02/thursday-july-2-russias-war-on-ukraine-news-and-information-from-ukraine/" },
+  { title: { uk: "Росія атакувала Київ 74 ракетами і 496 дронами: щонайменше 22 загиблих", en: "Russia attacked Kyiv with 74 missiles and 496 drones: at least 22 killed" }, tag: { uk: "Головне", en: "Top" }, time: { uk: "сьогодні", en: "today" }, major: true, image: IMG.kyiv },
+  { title: { uk: "Кабмін затвердив перший механізм експорту зброї", en: "Cabinet approves Ukraine's first weapons export mechanism" }, tag: { uk: "Політика", en: "Politics" }, time: { uk: "сьогодні", en: "today" }, image: IMG.rada },
+  { title: { uk: "Україна терміново просить майже 40 союзників про ракети Patriot", en: "Ukraine urgently appeals to nearly 40 allies for Patriot interceptors" }, tag: { uk: "Оборона", en: "Defense" }, time: { uk: "сьогодні", en: "today" }, image: IMG.patriot },
+  { title: { uk: "ЗСУ знеструмили 13 об'єктів електропостачання на окупованих територіях", en: "Ukraine's military knocked out 13 power stations in occupied territories" }, tag: { uk: "Війна", en: "War" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.pylons },
+  { title: { uk: "Далекобійний удар по НПЗ «Лукойл» у Кстово, Нижегородська область", en: "Long-range strike hits the Lukoil refinery in Kstovo, Nizhny Novgorod region" }, tag: { uk: "Війна", en: "War" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.refinery },
 ];
 
 const COUNTRY_ORDER = ["de", "pl", "cz", "gb", "es", "it", "nl", "eu"];
@@ -91,7 +84,7 @@ const HUBS = {
       { term: "Krankenkasse", title: { uk: "медичне страхування", en: "health insurance" }, desc: { uk: "Вибір каси, запис до лікаря, невідкладна допомога.", en: "Choosing a fund, booking a doctor, emergency care." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Німеччина", en: "Germany" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.berlin, source: SRC.euExtension },
+      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Німеччина", en: "Germany" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.berlin },
       { title: { uk: "Що зміниться у правилах оренди житла з липня", en: "What changes in rental rules from July" }, tag: { uk: "Житло", en: "Housing" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.berlin },
     ],
     bridge: [
@@ -114,7 +107,7 @@ const HUBS = {
       { term: "Школа", title: { uk: "запис дитини та іспити", en: "enrollment and exams" }, desc: { uk: "Обов'язковість навчання, українські класи.", en: "Compulsory schooling, Ukrainian classes." }, checked: { uk: "06.2026", en: "06.2026" }, updated: false },
     ],
     news: [
-      { title: { uk: "Польща отримала право не приймати нових біженців — чинний захист зберігається", en: "Poland granted the right to stop accepting new refugees — existing protections remain" }, tag: { uk: "Польща", en: "Poland" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.warsaw, source: SRC.optOut },
+      { title: { uk: "Польща отримала право не приймати нових біженців — чинний захист зберігається", en: "Poland granted the right to stop accepting new refugees — existing protections remain" }, tag: { uk: "Польща", en: "Poland" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.warsaw },
       { title: { uk: "На переході Медика — Шегині відновили рух: деталі", en: "Traffic resumed at the Medyka–Shehyni crossing: details" }, tag: { uk: "Кордон", en: "Border" }, time: { uk: "2 год тому", en: "2h ago" }, image: IMG.medyka },
       { title: { uk: "Варшава: ярмарок вакансій для українців цієї суботи", en: "Warsaw: job fair for Ukrainians this Saturday" }, tag: { uk: "Робота", en: "Work" }, time: { uk: "сьогодні", en: "today" }, image: IMG.warsaw },
     ],
@@ -138,7 +131,7 @@ const HUBS = {
       { term: "Переїзд між країнами", title: { uk: "зміна країни захисту", en: "changing your host country" }, desc: { uk: "Чи можна і як переоформити статус.", en: "Whether and how to transfer your status." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Європа", en: "Europe" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.brussels, source: SRC.euExtension },
+      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Європа", en: "Europe" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.brussels },
     ],
     bridge: [
       { icon: "🛡️", title: { uk: "Тимчасовий захист", en: "Temporary protection" }, note: { uk: "права в ЄС", en: "rights in the EU" } },
@@ -161,7 +154,7 @@ const HUBS = {
       { term: "Zdravotní pojištění", title: { uk: "медичне страхування", en: "health insurance" }, desc: { uk: "Вибір страхової компанії, візити до лікаря.", en: "Choosing an insurer, doctor visits." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: { uk: "Чехія отримала право не приймати нових біженців — чинний захист зберігається", en: "Czechia granted the right to stop accepting new refugees — existing protections remain" }, tag: { uk: "Чехія", en: "Czechia" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.prague, source: SRC.optOut },
+      { title: { uk: "Чехія отримала право не приймати нових біженців — чинний захист зберігається", en: "Czechia granted the right to stop accepting new refugees — existing protections remain" }, tag: { uk: "Чехія", en: "Czechia" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.prague },
       { title: { uk: "Прага розширює курси чеської мови для біженців", en: "Prague expands Czech language courses for refugees" }, tag: { uk: "Чехія", en: "Czechia" }, time: { uk: "сьогодні", en: "today" }, image: IMG.prague },
     ],
     bridge: [
@@ -208,7 +201,7 @@ const HUBS = {
       { term: "Tarjeta sanitaria", title: { uk: "медична картка", en: "health card" }, desc: { uk: "Запис до лікаря, невідкладна допомога.", en: "Booking a doctor, emergency care." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Іспанія", en: "Spain" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.madrid, source: SRC.euExtension },
+      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Іспанія", en: "Spain" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.madrid },
       { title: { uk: "Мадрид продовжує програму мовної адаптації", en: "Madrid extends the language adaptation programme" }, tag: { uk: "Іспанія", en: "Spain" }, time: { uk: "сьогодні", en: "today" }, image: IMG.madrid },
     ],
     bridge: [
@@ -231,7 +224,7 @@ const HUBS = {
       { term: "SSN", title: { uk: "реєстрація в системі охорони здоров'я", en: "national health service registration" }, desc: { uk: "Вибір лікаря, безкоштовна допомога.", en: "Choosing a doctor, free care." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Італія", en: "Italy" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.rome, source: SRC.euExtension },
+      { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Італія", en: "Italy" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.rome },
       { title: { uk: "Рим спрощує подачу документів на permesso", en: "Rome simplifies permesso document submission" }, tag: { uk: "Італія", en: "Italy" }, time: { uk: "сьогодні", en: "today" }, image: IMG.rome },
     ],
     bridge: [
@@ -254,7 +247,7 @@ const HUBS = {
       { term: "Zorgverzekering", title: { uk: "медичне страхування", en: "health insurance" }, desc: { uk: "Обов'язкова страховка та як оформити.", en: "Mandatory insurance and how to arrange it." }, checked: { uk: "04.2026", en: "04.2026" }, updated: false },
     ],
     news: [
-      { title: { uk: "У Нідерландах українці отримують 260–350 євро на особу щомісяця плюс ~215 євро на харчування", en: "In the Netherlands Ukrainians receive €260–350 per person monthly plus about €215 for food" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.amsterdam, source: SRC.finance },
+      { title: { uk: "У Нідерландах українці отримують 260–350 євро на особу щомісяця плюс ~215 євро на харчування", en: "In the Netherlands Ukrainians receive €260–350 per person monthly plus about €215 for food" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.amsterdam },
       { title: { uk: "Амстердам розширює програму мовних курсів", en: "Amsterdam expands its language course programme" }, tag: { uk: "Нідерланди", en: "Netherlands" }, time: { uk: "сьогодні", en: "today" }, image: IMG.amsterdam },
     ],
     bridge: [
@@ -311,11 +304,9 @@ const el = {
 
 function newsCard(item) {
   const major = item.major ? " card--major" : "";
-  const href = item.source || "#";
-  const linkAttrs = item.source ? ` target="_blank" rel="noopener"` : "";
   const title = tx(item.title).replace(/"/g, "&quot;");
   return `
-    <a href="${href}"${linkAttrs} class="card${major}">
+    <a href="#" class="card${major}">
       <div class="card__img"><img src="${item.image}" alt="${title}" loading="lazy"></div>
       <div>
         <p class="card__title">${tx(item.title)}</p>
