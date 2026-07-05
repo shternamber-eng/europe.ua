@@ -67,7 +67,7 @@
 
   <footer class="footer">
     <div class="container">
-      <p id="footerText">europe.ua · медіа для українців у Європі · © 2026</p>
+      <p id="footerText">europe.ua · твоя громада, де б ти не був</p>
     </div>
   </footer>
 
