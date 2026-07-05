@@ -450,6 +450,110 @@ body {
   color: var(--text-3);
 }
 
+/* ---------- Стаття (single.php) ---------- */
+
+.article { padding: 24px 0 48px; max-width: 720px; }
+
+.article__meta { font-size: 13px; color: var(--text-3); margin-bottom: 8px; }
+.article__cat { color: var(--accent); font-weight: 600; text-decoration: none; }
+
+.article__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+.article__image { margin-bottom: 20px; border-radius: var(--radius); overflow: hidden; }
+.article__image img { width: 100%; height: auto; display: block; }
+
+.article__content { font-size: 16px; line-height: 1.7; }
+.article__content h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 32px 0 12px;
+}
+.article__content p { margin-bottom: 14px; }
+.article__content ul,
+.article__content ol { margin: 0 0 14px 20px; }
+.article__content li { margin-bottom: 6px; }
+.article__content a { color: var(--accent); }
+
+.article__back { margin-top: 32px; }
+.article__back a { color: var(--text-2); font-size: 14px; text-decoration: none; }
+.article__back a:hover { text-decoration: underline; }
+
+/* Гайд: службові блоки всередині article__content */
+
+.guide-verified {
+  display: inline-block;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.guide-intro { background: var(--surface-2); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 20px; }
+.guide-intro__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+.guide-intro ul { margin: 0 0 0 18px; }
+
+.guide-toc { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 24px; }
+.guide-toc__title { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+.guide-toc ol { margin: 0 0 0 18px; }
+.guide-toc a { color: var(--text); text-decoration: none; }
+.guide-toc a:hover { color: var(--accent); }
+
+.guide-faq details { border-bottom: 1px solid var(--border); padding: 12px 0; }
+.guide-faq summary { font-weight: 600; cursor: pointer; }
+.guide-faq p { margin-top: 8px; margin-bottom: 0; }
+
+.guide-sources { list-style: none; margin: 0; }
+.guide-sources li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+
+.guide-check {
+  color: var(--danger);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ---------- Список статей (archive.php) ---------- */
+
+.article-list { padding: 24px 0 48px; }
+.article-list__title { font-family: var(--font-display); font-weight: 600; font-size: 22px; margin-bottom: 20px; }
+.article-list__grid { display: flex; flex-direction: column; gap: 12px; }
+
+.article-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+}
+.article-card:hover { border-color: var(--text-3); }
+.article-card__img { width: 84px; height: 64px; flex-shrink: 0; border-radius: 6px; overflow: hidden; }
+.article-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.article-card__title { font-weight: 600; font-size: 15px; }
+.article-card__meta { font-size: 12.5px; color: var(--text-3); }
+.article-list__pagination { margin-top: 24px; }
+
 /* ---------- Десктоп ---------- */
 
 @media (min-width: 720px) {
