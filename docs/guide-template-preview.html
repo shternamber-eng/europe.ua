@@ -1,0 +1,295 @@
+<title>Шаблон гайда v2 — europe.ua</title>
+<style>
+  :root {
+    --bg: #FBFAF7;
+    --surface: #FFFFFF;
+    --surface-2: #F2F0EA;
+    --text: #191C22;
+    --text-2: #5B6068;
+    --text-3: #8A8F98;
+    --border: #E4E1D8;
+    --accent: #1B4C9C;
+    --accent-soft: #E8EFFA;
+    --signal: #F2B705;
+    --danger: #B3382C;
+    --radius: 10px;
+    --font-display: "Unbounded", system-ui, sans-serif;
+    --font-body: "Fixel Text", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .meta-banner {
+    background: var(--text);
+    color: var(--bg);
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  .meta-banner b { color: var(--signal); }
+  .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  .header { border-bottom: 1px solid var(--border); padding: 16px 0; }
+  .logo { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+
+  .article { padding: 24px 0 56px; }
+  .article__meta { font-size: 13px; color: var(--text-3); margin-bottom: 8px; }
+  .article__cat { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .article__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.25;
+    text-wrap: balance;
+    margin: 0 0 16px;
+  }
+  .article__content { font-size: 16px; line-height: 1.7; }
+  .article__content h2 { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin: 32px 0 12px; }
+  .article__content p { margin: 0 0 14px; }
+  .article__content ul, .article__content ol { margin: 0 0 14px 20px; padding: 0; }
+  .article__content li { margin-bottom: 6px; }
+  .article__content a { color: var(--accent); }
+
+  .guide-verified-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .guide-verified, .guide-updated {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .guide-verified { background: var(--accent-soft); color: var(--accent); }
+  .guide-updated { background: var(--surface-2); color: var(--text-2); }
+
+  .guide-intro { background: var(--surface-2); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 20px; }
+  .guide-intro__title {
+    font-family: var(--font-display); font-weight: 600; font-size: 14px;
+    text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-2); margin-bottom: 8px;
+  }
+  .guide-intro ul { margin: 0 0 0 18px; }
+
+  .guide-warning {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: color-mix(in srgb, var(--signal) 14%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--signal) 45%, transparent);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 14.5px;
+  }
+  .guide-warning__icon { font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .guide-warning p { margin: 0; }
+  .guide-warning a { color: var(--accent); font-weight: 600; }
+
+  .guide-toc { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 24px; }
+  .guide-toc summary { font-weight: 600; font-size: 14px; cursor: pointer; list-style: none; }
+  .guide-toc summary::-webkit-details-marker { display: none; }
+  .guide-toc summary::after { content: "▾"; float: right; color: var(--text-3); }
+  .guide-toc[open] summary::after { content: "▴"; }
+  .guide-toc ol { margin: 10px 0 0 18px; }
+  .guide-toc a { color: var(--text); text-decoration: none; }
+  .guide-toc a:hover { color: var(--accent); }
+
+  .guide-faq details { border-bottom: 1px solid var(--border); padding: 12px 0; }
+  .guide-faq summary { font-weight: 600; cursor: pointer; }
+  .guide-faq p { margin: 8px 0 0; }
+
+  .guide-sources { list-style: none; margin: 0; padding: 0; }
+  .guide-sources li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14.5px; }
+  .guide-sources__group-title {
+    font-family: var(--font-display); font-weight: 600; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-2); margin: 20px 0 8px;
+  }
+  .guide-sources__group-title:first-child { margin-top: 0; }
+
+  .guide-check {
+    color: var(--danger); font-weight: 600;
+    background: color-mix(in srgb, var(--danger) 12%, transparent);
+    padding: 2px 6px; border-radius: 4px;
+  }
+
+  .guide-related { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .guide-related__title { font-family: var(--font-display); font-weight: 600; font-size: 16px; margin-bottom: 10px; }
+  .guide-related ul { list-style: none; margin: 0; padding: 0; }
+  .guide-related li { margin-bottom: 8px; }
+  .guide-related a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .guide-related a:hover { text-decoration: underline; }
+
+  .guide-cta {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-top: 20px; padding: 16px 18px; background: var(--accent); border-radius: var(--radius);
+  }
+  .guide-cta p { margin: 0; font-size: 14.5px; color: #fff; }
+  .guide-cta a {
+    flex-shrink: 0; background: #fff; color: var(--accent); font-weight: 600; font-size: 14px;
+    padding: 8px 16px; border-radius: 999px; text-decoration: none; white-space: nowrap;
+  }
+
+  .annotate {
+    margin: 10px 0 0; padding: 10px 14px; background: #fff;
+    border: 1px dashed var(--text-3); border-radius: 8px; font-size: 12.5px; color: var(--text-2);
+  }
+  .annotate b { color: var(--text); }
+  .changelog { max-width: 720px; margin: 0 auto 24px; padding: 0 20px; }
+  .changelog ol { font-size: 14px; color: var(--text-2); padding-left: 20px; }
+  .changelog li { margin-bottom: 4px; }
+  .jsonld-block {
+    max-width: 720px; margin: 24px auto 0; padding: 0 20px;
+  }
+  .jsonld-block pre {
+    background: #14161B; color: #d7dae0; padding: 14px 16px; border-radius: var(--radius);
+    overflow-x: auto; font-size: 12.5px; line-height: 1.6;
+  }
+  .jsonld-block h3 { font-family: var(--font-display); font-size: 15px; margin: 20px 0 8px; }
+</style>
+
+<div class="meta-banner">Превью шаблона v2 · реальные CSS-классы из <b>styles.css</b> · пример темы №1 «Anmeldung» · внесены все 6 правок</div>
+
+<div class="changelog">
+  <p style="font-weight:600; margin-bottom:4px;">Что изменилось с v1:</p>
+  <ol>
+    <li>Стоп-кран на [ПЕРЕВІРИТИ ВРУЧНУ] — уже в <code>src/publish.js</code> (не в этом файле, но зависит от него)</li>
+    <li>Жёлтый блок про региональные отличия + источники в два уровня (федеральный / городской пример)</li>
+    <li>JSON-LD FAQPage и HowTo — показаны отдельно ниже (в браузере невидимы, читает только Google)</li>
+    <li>«Читайте також» + кнопка Telegram — в конце статьи</li>
+    <li>Две плашки дат: «Перевірено» и «Оновлено»</li>
+    <li>Оглавление теперь &lt;details&gt; — сворачиваемое на любом экране, по умолчанию открыто</li>
+  </ol>
+</div>
+
+<header class="header">
+  <div class="container"><span class="logo">europe.ua</span></div>
+</header>
+
+<main class="container article">
+
+  <p class="article__meta"><a class="article__cat" href="#">Німеччина</a> · 05.07.2026</p>
+  <h1 class="article__title">Anmeldung: як зареєструватися за місцем проживання покроково</h1>
+
+  <div class="article__content">
+
+    <div class="guide-verified-row">
+      <span class="guide-verified">✓ Перевірено: 05.07.2026</span>
+      <span class="guide-updated">Оновлено: 05.07.2026</span>
+    </div>
+
+    <div class="guide-intro">
+      <p class="guide-intro__title">Коротко</p>
+      <ul>
+        <li>Anmeldung — обов'язкова реєстрація адреси, потрібна для всього іншого (рахунку, Krankenkasse, дозволу).</li>
+        <li>Термін: до 14 днів після заїзду або зміни адреси.</li>
+        <li>Запис відбувається у Bürgeramt (мерії) вашого району — часто онлайн.</li>
+        <li>Знадобиться підтвердження від власника житла (Wohnungsgeberbestätigung).</li>
+      </ul>
+    </div>
+
+    <div class="guide-warning">
+      <span class="guide-warning__icon" aria-hidden="true">⚠️</span>
+      <p>Німеччина — федерація: конкретні форми, терміни запису та вимоги відрізняються за землями і навіть містами. Цей гайд написано за загальнофедеральними джерелами та прикладом одного міста — <strong>перевірте деталі на сайті вашого місцевого Bürgeramt</strong>, посилання — у розділі «Джерела» нижче.</p>
+    </div>
+
+    <details class="guide-toc" open>
+      <summary>Зміст</summary>
+      <ol>
+        <li><a href="#s1">Крок 1. Зберіть документи</a></li>
+        <li><a href="#s2">Крок 2. Запишіться в Bürgeramt</a></li>
+        <li><a href="#s3">Крок 3. Прийдіть на прийом</a></li>
+        <li><a href="#faq">Часті питання</a></li>
+        <li><a href="#sources">Джерела</a></li>
+      </ol>
+    </details>
+
+    <h2 id="s1">Крок 1. Зберіть документи</h2>
+    <p>Приклад тексту кроку — сюди піде фактичний покроковий інструктаж з посиланнями на джерело кожної цифри чи терміну.</p>
+
+    <h2 id="s2">Крок 2. Запишіться в Bürgeramt</h2>
+    <p>…</p>
+
+    <h2 id="s3">Крок 3. Прийдіть на прийом</h2>
+    <p>Приклад позначки для неперевіреного факту: строк розгляду в деяких землях — <span class="guide-check">[ПЕРЕВІРИТИ ВРУЧНУ: точний строк для вашого Bundesland]</span>.</p>
+
+    <h2 id="faq">Часті питання</h2>
+    <div class="guide-faq">
+      <details>
+        <summary>Що робити, якщо немає власного житла?</summary>
+        <p>Відповідь з посиланням на джерело.</p>
+      </details>
+      <details>
+        <summary>Скільки коштує Anmeldung?</summary>
+        <p>Відповідь з посиланням на джерело.</p>
+      </details>
+    </div>
+
+    <h2 id="sources">Джерела</h2>
+    <p class="guide-sources__group-title">Федеральні</p>
+    <ul class="guide-sources">
+      <li><a href="https://www.bamf.de/" target="_blank" rel="nofollow noopener">bamf.de — Bundesamt für Migration und Flüchtlinge</a></li>
+    </ul>
+    <p class="guide-sources__group-title">Приклад для міста (перевірте свій Bürgeramt)</p>
+    <ul class="guide-sources">
+      <li><a href="https://www.berlin.de/labo/willkommen-in-berlin/-erste-schritte/anmeldung/" target="_blank" rel="nofollow noopener">berlin.de — Anmeldung, офіційна інструкція (приклад для Берліна)</a></li>
+    </ul>
+
+    <div class="guide-related">
+      <p class="guide-related__title">Читайте також</p>
+      <ul>
+        <li><a href="#">§24 AufenthG: тимчасовий захист і як його продовжити</a></li>
+        <li><a href="#">Krankenkasse: як обрати страхову касу і отримати картку</a></li>
+      </ul>
+    </div>
+
+    <div class="guide-cta">
+      <p>Більше практичного — у нашому Telegram-каналі</p>
+      <a href="⚠️-ССЫЛКА-НЕ-ПОДТВЕРЖДЕНА" target="_blank" rel="noopener">Підписатися</a>
+    </div>
+
+  </div>
+</main>
+
+<div class="jsonld-block">
+  <h3>JSON-LD (в &lt;head&gt; поста, не видно на сторінці — читає лише Google)</h3>
+  <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Що робити, якщо немає власного житла?",
+      "acceptedAnswer": { "@type": "Answer", "text": "…" }
+    },
+    {
+      "@type": "Question",
+      "name": "Скільки коштує Anmeldung?",
+      "acceptedAnswer": { "@type": "Answer", "text": "…" }
+    }
+  ]
+}
+&lt;/script&gt;
+
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Anmeldung: як зареєструватися за місцем проживання",
+  "step": [
+    { "@type": "HowToStep", "name": "Зберіть документи", "text": "…" },
+    { "@type": "HowToStep", "name": "Запишіться в Bürgeramt", "text": "…" },
+    { "@type": "HowToStep", "name": "Прийдіть на прийом", "text": "…" }
+  ]
+}
+&lt;/script&gt;</pre>
+  <div class="annotate"><b>Технически:</b> оба блока будут добавляться в <code>&lt;head&gt;</code> через WordPress-хук (per-post meta → <code>wp_head</code>), генерируются из тех же FAQ/шагов, что и видимый контент — не дублирую вручную.</div>
+</div>
+
+<div class="jsonld-block">
+  <div class="annotate">
+    <b>⚠️ Нужна ваша информация:</b> ссылка на Telegram-канал Europe.UA в блоке CTA выше — реальной ссылки у меня нет, вставил явный плейсхолдер, чтобы не потерялось. Дайте channel handle (например <code>t.me/имя_канала</code>), или скажите, что канала пока нет — тогда уберу блок из первых 5 гайдов.
+  </div>
+</div>

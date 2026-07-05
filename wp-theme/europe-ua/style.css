@@ -4,7 +4,7 @@ Theme Name: Europe.ua
 Theme URI: https://europa.ua
 Author: europa.ua
 Description: Новини з України та практичні гіди для українців у Європі — кастомна тема, перенесена зі статичного прототипу.
-Version: 1.4.0
+Version: 1.5.0
 Text Domain: europe-ua
 */
 
@@ -496,16 +496,17 @@ body {
 
 /* Гайд: службові блоки всередині article__content */
 
-.guide-verified {
+.guide-verified-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.guide-verified,
+.guide-updated {
   display: inline-block;
-  background: var(--accent-soft);
-  color: var(--accent);
   font-size: 12.5px;
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 999px;
-  margin-bottom: 16px;
 }
+.guide-verified { background: var(--accent-soft); color: var(--accent); }
+.guide-updated { background: var(--surface-2); color: var(--text-2); }
 
 .guide-intro { background: var(--surface-2); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 20px; }
 .guide-intro__title {
@@ -519,9 +520,35 @@ body {
 }
 .guide-intro ul { margin: 0 0 0 18px; }
 
+/* Регіональна відмінність (насамперед Німеччина: землі/міста) */
+.guide-warning {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--signal) 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--signal) 45%, transparent);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 14.5px;
+}
+.guide-warning__icon { font-size: 18px; line-height: 1; flex-shrink: 0; }
+.guide-warning p { margin: 0; }
+.guide-warning a { color: var(--accent); font-weight: 600; }
+
+/* Оглавление — <details>, згорнуте/розгорнуте керується самим читачем
+   (важливо на мобільному, де довгий зміст з'їдає екран) */
 .guide-toc { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 24px; }
-.guide-toc__title { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
-.guide-toc ol { margin: 0 0 0 18px; }
+.guide-toc summary {
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  list-style: none;
+}
+.guide-toc summary::-webkit-details-marker { display: none; }
+.guide-toc summary::after { content: "▾"; float: right; color: var(--text-3); }
+.guide-toc[open] summary::after { content: "▴"; }
+.guide-toc ol { margin: 10px 0 0 18px; }
 .guide-toc a { color: var(--text); text-decoration: none; }
 .guide-toc a:hover { color: var(--accent); }
 
@@ -529,8 +556,20 @@ body {
 .guide-faq summary { font-weight: 600; cursor: pointer; }
 .guide-faq p { margin-top: 8px; margin-bottom: 0; }
 
+/* Джерела — два рівні: федеральні (факт для всієї країни) і приклад
+   для конкретного міста (позначений явно, щоб не читався як загальне) */
 .guide-sources { list-style: none; margin: 0; }
 .guide-sources li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.guide-sources__group-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-2);
+  margin: 20px 0 8px;
+}
+.guide-sources__group-title:first-child { margin-top: 0; }
 
 .guide-check {
   color: var(--danger);
@@ -538,6 +577,37 @@ body {
   background: color-mix(in srgb, var(--danger) 12%, transparent);
   padding: 2px 6px;
   border-radius: 4px;
+}
+
+/* Хвіст гайда: суміжні матеріали + Telegram */
+.guide-related { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+.guide-related__title { font-family: var(--font-display); font-weight: 600; font-size: 16px; margin-bottom: 10px; }
+.guide-related ul { list-style: none; margin: 0; padding: 0; }
+.guide-related li { margin-bottom: 8px; }
+.guide-related a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.guide-related a:hover { text-decoration: underline; }
+
+.guide-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: var(--accent);
+  border-radius: var(--radius);
+}
+.guide-cta p { margin: 0; font-size: 14.5px; color: #fff; }
+.guide-cta a {
+  flex-shrink: 0;
+  background: #fff;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 /* ---------- Список статей (archive.php) ---------- */
