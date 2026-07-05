@@ -21,6 +21,7 @@ const STRINGS = {
     updatedBadge: "правила змінились",
     docTitle: "europe.ua — новини та життя в Європі",
     docDescription: "Новини з України та практичні гіди для українців у Європі",
+    tagline: "Тебе пам'ятають. Тебе обіймуть.",
   },
   en: {
     tabUkraine: "Ukraine",
@@ -36,6 +37,7 @@ const STRINGS = {
     updatedBadge: "rules changed",
     docTitle: "europe.ua — news and life in Europe",
     docDescription: "News from Ukraine and practical guides for Ukrainians in Europe",
+    tagline: "You are remembered. You are embraced.",
   },
 };
 
@@ -284,6 +286,7 @@ const el = {
   langBtn: document.getElementById("langBtn"),
   langLabel: document.getElementById("langLabel"),
   hereHint: document.getElementById("hereHint"),
+  tagline: document.getElementById("tagline"),
   tabUkraineLabel: document.getElementById("tabUkraineLabel"),
   tabHereLabel: document.getElementById("tabHereLabel"),
   tabs: document.querySelectorAll(".tab"),
@@ -357,6 +360,7 @@ function renderChrome() {
   el.bridgeTitle.textContent = s.bridgeTitle;
   el.hubNewsTitle.textContent = s.localNews;
   el.footerText.textContent = s.footer;
+  el.tagline.textContent = s.tagline;
 }
 
 function render() {
