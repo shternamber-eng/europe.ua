@@ -34,7 +34,7 @@
 
   <nav class="tabs" aria-label="Основні розділи">
     <div class="container tabs__inner">
-      <button class="tab is-active" data-tab="ukraine"><span id="tabUkraineLabel">Україна</span></button>
+      <button class="tab is-active" data-tab="ukraine"><span id="tabUkraineLabel">Україна</span><span class="tagline" id="tagline">Тебе пам'ятають. Тебе обіймуть.</span></button>
       <button class="tab" data-tab="here"><span id="tabHereLabel">Тут</span><span class="tab__hint" id="hereHint"> · DE</span></button>
     </div>
   </nav>
@@ -43,7 +43,6 @@
 
     <!-- Таб «Україна»: спільна стрічка для всіх країн -->
     <section id="view-ukraine" class="view">
-      <p class="tagline" id="tagline">Тебе пам'ятають. Тебе обіймуть.</p>
       <div class="feed-meta">
         <span class="live-dot" aria-hidden="true"></span>
         <span id="feedMeta">Стрічка · оновлено щойно</span>
