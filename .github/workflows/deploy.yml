@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "wp-theme/europe-ua/**"
+      - "site-root/**"
   workflow_dispatch:
 
 jobs:
@@ -21,3 +22,16 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: wp-theme/europe-ua/
           server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          state-name: .ftp-deploy-sync-state-theme.json
+
+      # WP-корінь (три рівні вище теми) — тільки .htaccess, ніколи не чистимо
+      # й не видаляємо чужі файли (dangerous-clean-slate: false за замовчуванням).
+      - name: Upload site-root files (.htaccess) via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: site-root/
+          server-dir: /europe.ua/
+          state-name: .ftp-deploy-sync-state-root.json
