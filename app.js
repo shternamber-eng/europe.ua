@@ -63,11 +63,11 @@ const IMG = {
 // ---------- Дані (реальні новини станом на 02.07.2026) ----------
 
 const UKRAINE_NEWS = [
-  { title: { uk: "Росія атакувала Київ 74 ракетами і 496 дронами: щонайменше 22 загиблих", en: "Russia attacked Kyiv with 74 missiles and 496 drones: at least 22 killed" }, tag: { uk: "Головне", en: "Top" }, time: { uk: "сьогодні", en: "today" }, major: true, image: IMG.kyiv },
-  { title: { uk: "Кабмін затвердив перший механізм експорту зброї", en: "Cabinet approves Ukraine's first weapons export mechanism" }, tag: { uk: "Політика", en: "Politics" }, time: { uk: "сьогодні", en: "today" }, image: IMG.rada },
-  { title: { uk: "Україна терміново просить майже 40 союзників про ракети Patriot", en: "Ukraine urgently appeals to nearly 40 allies for Patriot interceptors" }, tag: { uk: "Оборона", en: "Defense" }, time: { uk: "сьогодні", en: "today" }, image: IMG.patriot },
-  { title: { uk: "ЗСУ знеструмили 13 об'єктів електропостачання на окупованих територіях", en: "Ukraine's military knocked out 13 power stations in occupied territories" }, tag: { uk: "Війна", en: "War" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.pylons },
-  { title: { uk: "Далекобійний удар по НПЗ «Лукойл» у Кстово, Нижегородська область", en: "Long-range strike hits the Lukoil refinery in Kstovo, Nizhny Novgorod region" }, tag: { uk: "Війна", en: "War" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.refinery },
+  { title: { uk: "Росія завдала масованого удару по Києву: щонайменше 31 загиблий", en: "Russia launches massive strike on Kyiv: at least 31 killed" }, tag: { uk: "Головне", en: "Top" }, time: { uk: "2 дні тому", en: "2 days ago" }, major: true, image: IMG.kyiv },
+  { title: { uk: "Зеленський і Трамп обговорили ситуацію на фронті напередодні Дня незалежності США", en: "Zelensky and Trump discussed the frontline situation ahead of US Independence Day" }, tag: { uk: "Політика", en: "Politics" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.rada },
+  { title: { uk: "Українські сили завдали удару по нафтовому терміналу в Санкт-Петербурзі", en: "Ukrainian forces struck an oil terminal in St. Petersburg" }, tag: { uk: "Війна", en: "War" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.refinery },
+  { title: { uk: "Єврокомісія обговорює жорсткіші правила захисту для чоловіків призовного віку", en: "European Commission discusses stricter protection rules for men of conscription age" }, tag: { uk: "Європа", en: "Europe" }, time: { uk: "3 дні тому", en: "3 days ago" }, image: IMG.brussels },
+  { title: { uk: "Польща скоротила виплати біженцям — Німеччина побоюється нової хвилі переїзду", en: "Poland cuts refugee benefits — Germany fears a new wave of arrivals" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "цього тижня", en: "this week" }, image: IMG.warsaw },
 ];
 
 const COUNTRY_ORDER = ["de", "pl", "cz", "gb", "es", "it", "nl", "eu"];
@@ -87,7 +87,7 @@ const HUBS = {
     ],
     news: [
       { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Німеччина", en: "Germany" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.berlin },
-      { title: { uk: "Що зміниться у правилах оренди житла з липня", en: "What changes in rental rules from July" }, tag: { uk: "Житло", en: "Housing" }, time: { uk: "вчора", en: "yesterday" }, image: IMG.berlin },
+      { title: { uk: "Німеччина побоюється нової хвилі переїзду через скорочення виплат у Польщі", en: "Germany fears a new wave of arrivals after Poland cuts benefits" }, tag: { uk: "Німеччина", en: "Germany" }, time: { uk: "цього тижня", en: "this week" }, image: IMG.berlin },
     ],
     bridge: [
       { icon: "📄", title: { uk: "Документи", en: "Documents" }, note: { uk: "перевірено: 06.2026", en: "checked: 06.2026" } },
@@ -111,7 +111,7 @@ const HUBS = {
     news: [
       { title: { uk: "Польща отримала право не приймати нових біженців — чинний захист зберігається", en: "Poland granted the right to stop accepting new refugees — existing protections remain" }, tag: { uk: "Польща", en: "Poland" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.warsaw },
       { title: { uk: "На переході Медика — Шегині відновили рух: деталі", en: "Traffic resumed at the Medyka–Shehyni crossing: details" }, tag: { uk: "Кордон", en: "Border" }, time: { uk: "2 год тому", en: "2h ago" }, image: IMG.medyka },
-      { title: { uk: "Варшава: ярмарок вакансій для українців цієї суботи", en: "Warsaw: job fair for Ukrainians this Saturday" }, tag: { uk: "Робота", en: "Work" }, time: { uk: "сьогодні", en: "today" }, image: IMG.warsaw },
+      { title: { uk: "Варшава скоротила соціальні виплати біженцям з березня", en: "Warsaw has cut refugee benefits since March" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "цього тижня", en: "this week" }, image: IMG.warsaw },
     ],
     bridge: [
       { icon: "🚌", title: { uk: "Поїздка додому", en: "Trip home" }, note: { uk: "кордон, перевізники", en: "border, carriers" } },
