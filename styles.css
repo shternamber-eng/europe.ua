@@ -294,6 +294,8 @@ body {
 }
 
 .card:hover { border-color: var(--text-3); }
+.card--demo { cursor: default; }
+.card--demo:hover { border-color: var(--border); }
 
 .card__img {
   flex-shrink: 0;

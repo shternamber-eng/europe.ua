@@ -303,17 +303,81 @@ const el = {
   footerText: document.getElementById("footerText"),
 };
 
+// ---------- Реальні пости з WordPress ----------
+
+const WP_REST_BASE = "https://europe.ua/?rest_route=";
+
+// Ті самі slug'и категорій, що й у hromada-bot (sources.json / official-sources.json)
+const CATEGORY_SLUGS = {
+  ua: "ukraina",
+  de: "nimechchyna",
+  pl: "polshcha",
+  cz: "chekhiia",
+  gb: "brytaniia",
+  es: "ispaniia",
+  it: "italiia",
+  nl: "niderlandy",
+  eu: "yevrokomisiya",
+};
+
+const realPostsCache = {}; // slug -> Promise<Array<{title,link,date,image}>>
+
+function getRealPosts(slug, count = 5) {
+  if (!slug) return Promise.resolve([]);
+  if (!(slug in realPostsCache)) {
+    realPostsCache[slug] = fetch(`${WP_REST_BASE}/wp/v2/categories&slug=${slug}`)
+      .then(r => (r.ok ? r.json() : []))
+      .then(cats => {
+        if (!cats.length) return [];
+        return fetch(`${WP_REST_BASE}/wp/v2/posts&categories=${cats[0].id}&per_page=${count}&_embed`)
+          .then(r => (r.ok ? r.json() : []))
+          .then(posts => posts.map(p => ({
+            title: (p.title?.rendered || "").replace(/&#8217;/g, "’").replace(/&amp;/g, "&"),
+            link: p.link,
+            date: p.date,
+            image: p._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes?.medium?.source_url
+              || p._embedded?.["wp:featuredmedia"]?.[0]?.source_url
+              || null,
+          })));
+      })
+      .catch(() => []);
+  }
+  return realPostsCache[slug];
+}
+
+function formatPostDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString(lang === "en" ? "en-GB" : "uk-UA", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
 // ---------- Рендер ----------
 
-function newsCard(item) {
+// Демо-картка (плейсхолдер) — навмисно НЕ клікабельна: посилання нема нікуди,
+// доки для цієї категорії немає жодного реального посту на сайті.
+function demoCard(item) {
   const major = item.major ? " card--major" : "";
   const title = tx(item.title).replace(/"/g, "&quot;");
   return `
-    <a href="#" class="card${major}">
+    <div class="card${major} card--demo">
       <div class="card__img"><img src="${item.image}" alt="${title}" loading="lazy"></div>
       <div>
         <p class="card__title">${tx(item.title)}</p>
         <p class="card__meta"><span class="card__tag">${tx(item.tag)}</span> · ${tx(item.time)}</p>
+      </div>
+    </div>`;
+}
+
+// Картка реального посту — клікабельна, веде на статтю на europe.ua
+function realCard(post) {
+  const imgBlock = post.image
+    ? `<div class="card__img"><img src="${post.image}" alt="${post.title.replace(/"/g, "&quot;")}" loading="lazy"></div>`
+    : "";
+  return `
+    <a href="${post.link}" class="card">
+      ${imgBlock}
+      <div>
+        <p class="card__title">${post.title}</p>
+        <p class="card__meta">${formatPostDate(post.date)}</p>
       </div>
     </a>`;
 }
@@ -374,13 +438,13 @@ function render() {
   renderCountryMenu();
 
   // Українська стрічка (спільна) + мостик у країновий хаб
-  el.ukraineFeed.innerHTML = UKRAINE_NEWS.map(newsCard).join("");
+  el.ukraineFeed.innerHTML = UKRAINE_NEWS.map(demoCard).join("");
   el.bridgeGrid.innerHTML = hub.bridge.map(bridgeItem).join("");
 
   // Країновий хаб: у деяких країнах довідник вище новин, в інших — навпаки
   el.hubIntro.textContent = tx(hub.intro);
   el.hubGuides.innerHTML = hub.guides.map(guideCard).join("");
-  el.hubFeed.innerHTML = hub.news.map(newsCard).join("");
+  el.hubFeed.innerHTML = hub.news.map(demoCard).join("");
 
   const guidesBlock = el.hubGuides;
   const newsBlock = el.hubFeed;
@@ -391,6 +455,23 @@ function render() {
     parent.insertBefore(newsBlock, guidesBlock);
     parent.insertBefore(el.hubNewsTitle, newsBlock);
   }
+
+  refreshRealPosts(country);
+}
+
+// Підвантажує реальні пости з WordPress і підміняє демо-картки, якщо для
+// категорії вже є хоч один опублікований матеріал. Захист від «гонки» —
+// застосовуємо результат, тільки якщо користувач не встиг перемкнути країну.
+function refreshRealPosts(requestedCountry) {
+  getRealPosts(CATEGORY_SLUGS.ua).then(posts => {
+    if (posts.length) el.ukraineFeed.innerHTML = posts.map(realCard).join("");
+  });
+
+  const slug = CATEGORY_SLUGS[requestedCountry];
+  getRealPosts(slug).then(posts => {
+    if (country !== requestedCountry) return; // користувач вже перемкнув країну
+    if (posts.length) el.hubFeed.innerHTML = posts.map(realCard).join("");
+  });
 }
 
 // ---------- Таби ----------
