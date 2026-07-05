@@ -1,0 +1,4 @@
+Fixel — designed by MacPaw (Ukraine), distributed free at https://fixel.macpaw.com/
+Licensed under the SIL Open Font License 1.1: https://openfontlicense.org
+
+Weights used here: FixelText-Regular, FixelText-Medium, FixelText-SemiBold.

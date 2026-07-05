@@ -30,9 +30,6 @@
       </div>
       <ul class="country-menu" id="countryMenu" role="listbox" hidden></ul>
     </div>
-    <div class="container">
-      <p class="tagline" id="tagline">Тебе пам'ятають. Тебе обіймуть.</p>
-    </div>
   </header>
 
   <nav class="tabs" aria-label="Основні розділи">
@@ -46,6 +43,7 @@
 
     <!-- Таб «Україна»: спільна стрічка для всіх країн -->
     <section id="view-ukraine" class="view">
+      <p class="tagline" id="tagline">Тебе пам'ятають. Тебе обіймуть.</p>
       <div class="feed-meta">
         <span class="live-dot" aria-hidden="true"></span>
         <span id="feedMeta">Стрічка · оновлено щойно</span>
