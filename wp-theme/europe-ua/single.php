@@ -25,7 +25,7 @@
           if ($cats) {
             echo '<a class="article__cat" href="' . esc_url(get_category_link($cats[0]->term_id)) . '">' . esc_html($cats[0]->name) . '</a> · ';
           }
-          echo esc_html(get_the_date('d.m.Y'));
+          echo esc_html(get_the_date('d.m.Y, H:i'));
           ?>
         </p>
         <h1 class="article__title"><?php the_title(); ?></h1>

@@ -27,7 +27,7 @@
               <div class="article-card__img"><?php the_post_thumbnail('medium'); ?></div>
             <?php endif; ?>
             <p class="article-card__title"><?php the_title(); ?></p>
-            <p class="article-card__meta"><?php echo esc_html(get_the_date('d.m.Y')); ?></p>
+            <p class="article-card__meta"><?php echo esc_html(get_the_date('d.m.Y, H:i')); ?></p>
           </a>
         <?php endwhile; ?>
       </div>

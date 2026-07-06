@@ -347,7 +347,10 @@ function getRealPosts(slug, count = 5) {
 
 function formatPostDate(iso) {
   const d = new Date(iso);
-  return d.toLocaleDateString(lang === "en" ? "en-GB" : "uk-UA", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const locale = lang === "en" ? "en-GB" : "uk-UA";
+  const date = d.toLocaleDateString(locale, { day: "2-digit", month: "2-digit", year: "numeric" });
+  const time = d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+  return `${date}, ${time}`;
 }
 
 // ---------- Рендер ----------
