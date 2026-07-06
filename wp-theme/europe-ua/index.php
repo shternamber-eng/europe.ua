@@ -48,6 +48,7 @@
         <span id="feedMeta">Стрічка · оновлено щойно</span>
       </div>
       <div id="ukraineFeed" class="feed"></div>
+      <p class="feed-more"><a id="ukraineFeedMore" href="https://europe.ua/category/ukraina/"></a></p>
 
       <div class="bridge" id="bridgeCard">
         <p class="bridge__title" id="bridgeTitle">Корисне у вашій країні</p>
@@ -60,7 +61,10 @@
       <div id="hubIntro" class="hub-intro"></div>
       <div id="hubGuides" class="guides"></div>
       <h2 class="section-title" id="hubNewsTitle">Місцеві новини</h2>
-      <div id="hubFeed" class="feed"></div>
+      <div id="hubFeedBlock">
+        <div id="hubFeed" class="feed"></div>
+        <p class="feed-more"><a id="hubFeedMore" href="#"></a></p>
+      </div>
     </section>
 
   </main>
@@ -68,6 +72,15 @@
   <footer class="footer">
     <div class="container">
       <p id="footerText">europe.ua · твоя громада, де б ти не був</p>
+      <nav class="footer__categories" aria-label="Категорії сайту">
+        <?php
+        $footer_default_cat = (int) get_option('default_category');
+        foreach (get_categories(['hide_empty' => false]) as $footer_cat) :
+          if ($footer_cat->term_id === $footer_default_cat) continue;
+        ?>
+          <a href="<?php echo esc_url(get_category_link($footer_cat->term_id)); ?>"><?php echo esc_html(europe_ua_category_label($footer_cat)); ?></a>
+        <?php endforeach; ?>
+      </nav>
     </div>
   </footer>
 

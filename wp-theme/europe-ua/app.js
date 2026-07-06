@@ -22,6 +22,9 @@ const STRINGS = {
     docTitle: "europe.ua — новини та життя в Європі",
     docDescription: "Новини з України та практичні гіди для українців у Європі",
     tagline: "Тебе пам'ятають. Тебе обіймуть.",
+    allNewsLink: label => `Всі новини ${label} →`,
+    lifeGoesOn: "Життя триває",
+    moreGoodNews: "Більше хороших новин →",
   },
   en: {
     tabUkraine: "Ukraine",
@@ -38,8 +41,28 @@ const STRINGS = {
     docTitle: "europe.ua — news and life in Europe",
     docDescription: "News from Ukraine and practical guides for Ukrainians in Europe",
     tagline: "You are remembered. You are embraced.",
+    allNewsLink: label => `All ${label} news →`,
+    lifeGoesOn: "Life goes on",
+    moreGoodNews: "More good news →",
   },
 };
+
+// Родовий відмінок (укр.) для фрази «Всі новини ______»: назви країн у HUBS
+// стоять в називному ("Німеччина"), а тут треба "Німеччини" — тому окрема
+// мапа замість спроби відмінювати рядок програмно.
+const ALL_NEWS_LABELS = {
+  ua: { uk: "України", en: "Ukraine" },
+  de: { uk: "Німеччини", en: "Germany" },
+  pl: { uk: "Польщі", en: "Poland" },
+  cz: { uk: "Чехії", en: "the Czech Republic" },
+  gb: { uk: "Великої Британії", en: "the UK" },
+  es: { uk: "Іспанії", en: "Spain" },
+  it: { uk: "Італії", en: "Italy" },
+  nl: { uk: "Нідерландів", en: "the Netherlands" },
+  eu: { uk: "Європейської комісії", en: "the European Commission" },
+};
+
+const LIFE_CATEGORY_SLUG = "zhyttia-tryvaie";
 
 // ---------- Зображення (Wikimedia Commons, вільна ліцензія) ----------
 
@@ -294,11 +317,14 @@ const el = {
   viewHere: document.getElementById("view-here"),
   feedMeta: document.getElementById("feedMeta"),
   ukraineFeed: document.getElementById("ukraineFeed"),
+  ukraineFeedMore: document.getElementById("ukraineFeedMore"),
   bridgeTitle: document.getElementById("bridgeTitle"),
   bridgeGrid: document.getElementById("bridgeGrid"),
   hubIntro: document.getElementById("hubIntro"),
   hubGuides: document.getElementById("hubGuides"),
+  hubFeedBlock: document.getElementById("hubFeedBlock"),
   hubFeed: document.getElementById("hubFeed"),
+  hubFeedMore: document.getElementById("hubFeedMore"),
   hubNewsTitle: document.getElementById("hubNewsTitle"),
   footerText: document.getElementById("footerText"),
 };
@@ -385,6 +411,24 @@ function realCard(post) {
     </a>`;
 }
 
+// Стрічка «Україна»: перші 4 картки, далі (якщо є пости) видимий блок
+// «Життя триває», далі решта. Порожньої заглушки немає — секція просто
+// не рендериться, якщо в категорії ще нема жодного посту.
+function renderUkraineFeed(posts, cardFn, lifePosts) {
+  const first = posts.slice(0, 4).map(cardFn).join("");
+  const rest = posts.slice(4).map(cardFn).join("");
+  if (!lifePosts || !lifePosts.length) return first + rest;
+
+  const life = `
+    <div class="life-section">
+      <h2 class="section-title life-section__title">🌻 ${STRINGS[lang].lifeGoesOn}</h2>
+      <div class="feed">${lifePosts.slice(0, 3).map(realCard).join("")}</div>
+      <p class="feed-more"><a href="https://europe.ua/category/${LIFE_CATEGORY_SLUG}/">${STRINGS[lang].moreGoodNews}</a></p>
+    </div>`;
+
+  return first + life + rest;
+}
+
 function guideCard(g) {
   const updated = g.updated ? " guide--updated" : "";
   const badge = g.updated ? STRINGS[lang].updatedBadge : `${STRINGS[lang].checkedPrefix}: ${tx(g.checked)}`;
@@ -428,6 +472,7 @@ function renderChrome() {
   el.hubNewsTitle.textContent = s.localNews;
   el.footerText.textContent = s.footer;
   el.tagline.textContent = s.tagline;
+  el.ukraineFeedMore.textContent = s.allNewsLink(ALL_NEWS_LABELS.ua[lang]);
 }
 
 function render() {
@@ -441,16 +486,18 @@ function render() {
   renderCountryMenu();
 
   // Українська стрічка (спільна) + мостик у країновий хаб
-  el.ukraineFeed.innerHTML = UKRAINE_NEWS.map(demoCard).join("");
+  el.ukraineFeed.innerHTML = renderUkraineFeed(UKRAINE_NEWS, demoCard, []);
   el.bridgeGrid.innerHTML = hub.bridge.map(bridgeItem).join("");
 
   // Країновий хаб: у деяких країнах довідник вище новин, в інших — навпаки
   el.hubIntro.textContent = tx(hub.intro);
   el.hubGuides.innerHTML = hub.guides.map(guideCard).join("");
   el.hubFeed.innerHTML = hub.news.map(demoCard).join("");
+  el.hubFeedMore.href = `https://europe.ua/category/${CATEGORY_SLUGS[country]}/`;
+  el.hubFeedMore.textContent = STRINGS[lang].allNewsLink(ALL_NEWS_LABELS[country][lang]);
 
   const guidesBlock = el.hubGuides;
-  const newsBlock = el.hubFeed;
+  const newsBlock = el.hubFeedBlock;
   const parent = guidesBlock.parentNode;
   if (hub.guidesFirst) {
     parent.insertBefore(guidesBlock, el.hubNewsTitle);
@@ -466,8 +513,8 @@ function render() {
 // категорії вже є хоч один опублікований матеріал. Захист від «гонки» —
 // застосовуємо результат, тільки якщо користувач не встиг перемкнути країну.
 function refreshRealPosts(requestedCountry) {
-  getRealPosts(CATEGORY_SLUGS.ua).then(posts => {
-    if (posts.length) el.ukraineFeed.innerHTML = posts.map(realCard).join("");
+  Promise.all([getRealPosts(CATEGORY_SLUGS.ua), getRealPosts(LIFE_CATEGORY_SLUG, 3)]).then(([posts, lifePosts]) => {
+    if (posts.length) el.ukraineFeed.innerHTML = renderUkraineFeed(posts, realCard, lifePosts);
   });
 
   const slug = CATEGORY_SLUGS[requestedCountry];

@@ -4,7 +4,7 @@ Theme Name: Europe.ua
 Theme URI: https://europa.ua
 Author: europa.ua
 Description: Новини з України та практичні гіди для українців у Європі — кастомна тема, перенесена зі статичного прототипу.
-Version: 1.6.1
+Version: 1.7.0
 Text Domain: europe-ua
 */
 
@@ -340,6 +340,29 @@ body {
 
 .card--urgent .card__tag { color: var(--danger); }
 
+.feed-more { margin-top: 10px; }
+
+.feed-more a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.feed-more a:hover { text-decoration: underline; }
+
+/* ---------- «Життя триває» — видимий блок у стрічці «Україна» ---------- */
+
+.life-section {
+  margin: 16px 0;
+  padding: 14px;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+}
+
+.life-section .section-title { margin: 0 0 10px; }
+.life-section .feed-more { margin-top: 10px; }
+
 /* ---------- Мостик «корисне у вашій країні» ---------- */
 
 .bridge {
@@ -460,6 +483,21 @@ body {
   font-size: 13px;
   color: var(--text-3);
 }
+
+.footer__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 12px;
+}
+
+.footer__categories a {
+  color: var(--text-3);
+  text-decoration: none;
+  font-size: 12.5px;
+}
+
+.footer__categories a:hover { color: var(--accent); text-decoration: underline; }
 
 /* ---------- Стаття (single.php) ---------- */
 
