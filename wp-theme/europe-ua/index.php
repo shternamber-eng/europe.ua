@@ -59,7 +59,10 @@
     <!-- Таб «Тут»: країновий хаб -->
     <section id="view-here" class="view" hidden>
       <div id="hubIntro" class="hub-intro"></div>
-      <div id="hubGuides" class="guides"></div>
+      <div id="hubGuidesBlock">
+        <div id="hubGuides" class="guides"></div>
+        <p class="feed-more" id="hubGuidesMoreWrap" hidden><a id="hubGuidesMore" href="#"></a></p>
+      </div>
       <h2 class="section-title" id="hubNewsTitle">Місцеві новини</h2>
       <div id="hubFeedBlock">
         <div id="hubFeed" class="feed"></div>
@@ -72,6 +75,10 @@
   <footer class="footer">
     <div class="container">
       <p id="footerText">europe.ua · твоя громада, де б ти не був</p>
+      <nav class="footer__categories" aria-label="Довідники">
+        <a href="https://europe.ua/dovidnyk/nimechchyna/">Довідник: Німеччина</a>
+        <a href="https://europe.ua/dovidnyk/polshcha/">Довідник: Польща</a>
+      </nav>
       <nav class="footer__categories" aria-label="Категорії сайту">
         <?php
         $footer_default_cat = (int) get_option('default_category');

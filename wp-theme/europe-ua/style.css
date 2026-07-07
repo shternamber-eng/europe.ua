@@ -4,7 +4,7 @@ Theme Name: Europe.ua
 Theme URI: https://europa.ua
 Author: europa.ua
 Description: Новини з України та практичні гіди для українців у Європі — кастомна тема, перенесена зі статичного прототипу.
-Version: 1.7.0
+Version: 1.8.0
 Text Domain: europe-ua
 */
 
@@ -429,13 +429,17 @@ body {
 .guides { display: flex; flex-direction: column; gap: 10px; }
 
 .guide {
+  display: block;
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
   border-radius: 0 var(--radius) var(--radius) 0;
   padding: 14px 16px;
-  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
+
+.guide:hover { border-color: var(--text-3); border-left-color: var(--accent); }
 
 .guide__title {
   font-size: 15px;
@@ -470,11 +474,6 @@ body {
   font-weight: 500;
 }
 
-.guide--updated .guide__badge {
-  background: color-mix(in srgb, var(--signal) 18%, transparent);
-  color: var(--text);
-}
-
 /* ---------- Подвал ---------- */
 
 .footer {
@@ -498,6 +497,40 @@ body {
 }
 
 .footer__categories a:hover { color: var(--accent); text-decoration: underline; }
+
+/* ---------- Довідник (page-guide-hub.php) ---------- */
+
+.guide-hub { padding: 24px 0 48px; max-width: 720px; }
+
+.guide-hub__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.guide-hub__intro { font-size: 16px; line-height: 1.6; color: var(--text-2); margin-bottom: 28px; }
+
+.guide-hub__list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; }
+
+.guide-hub__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.guide-hub__item:hover { border-color: var(--text-3); border-left-color: var(--accent); }
+
+.guide-hub__item-title { font-size: 15px; font-weight: 600; }
+.guide-hub__item-meta { font-size: 12px; color: var(--text-3); white-space: nowrap; }
 
 /* ---------- Стаття (single.php) ---------- */
 
@@ -679,4 +712,11 @@ body {
   .card__img { width: 120px; height: 80px; }
   .card--major .card__title { font-size: 19px; }
   .bridge__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  .guide-hub__item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
 }
