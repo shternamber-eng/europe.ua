@@ -59,14 +59,16 @@
     <!-- Таб «Тут»: країновий хаб -->
     <section id="view-here" class="view" hidden>
       <div id="hubIntro" class="hub-intro"></div>
-      <div id="hubGuidesBlock">
-        <div id="hubGuides" class="guides"></div>
-        <p class="feed-more" id="hubGuidesMoreWrap" hidden><a id="hubGuidesMore" href="#"></a></p>
-      </div>
       <h2 class="section-title" id="hubNewsTitle">Місцеві новини</h2>
       <div id="hubFeedBlock">
         <div id="hubFeed" class="feed"></div>
         <p class="feed-more"><a id="hubFeedMore" href="#"></a></p>
+      </div>
+
+      <div class="bridge" id="hubUsefulBlock" hidden>
+        <p class="bridge__title" id="hubUsefulTitle">Корисне у вашій країні</p>
+        <div class="useful-grid" id="hubUsefulGrid"></div>
+        <p class="feed-more"><a id="hubGuidesMore" href="#"></a></p>
       </div>
     </section>
 

@@ -65,7 +65,7 @@ $europe_ua_hub_themes = [
         if (!$europe_ua_hub_query->have_posts()) continue;
         $europe_ua_hub_has_any = true;
     ?>
-      <h2 class="section-title"><?php echo esc_html($theme_label); ?></h2>
+      <h2 class="section-title" id="<?php echo esc_attr($theme_slug); ?>"><?php echo esc_html($theme_label); ?></h2>
       <div class="guide-hub__list">
         <?php while ($europe_ua_hub_query->have_posts()) : $europe_ua_hub_query->the_post(); ?>
           <a href="<?php the_permalink(); ?>" class="guide-hub__item">

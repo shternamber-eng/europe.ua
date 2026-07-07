@@ -22,8 +22,11 @@ const STRINGS = {
     tagline: "Тебе пам'ятають. Тебе обіймуть.",
     allNewsLink: label => `Всі новини ${label} →`,
     allGuidesLink: label => `Усі гайди: ${label} →`,
+    hubComingSoon: label => `Довідник для ${label} готується`,
+    guideCount: n => `${n} ${pluralizeUk(n, "гайд", "гайди", "гайдів")}`,
     lifeGoesOn: "Життя триває",
     moreGoodNews: "Більше хороших новин →",
+    checkedPrefix: "перевірено",
   },
   en: {
     tabUkraine: "Ukraine",
@@ -40,10 +43,22 @@ const STRINGS = {
     tagline: "You are remembered. You are embraced.",
     allNewsLink: label => `All ${label} news →`,
     allGuidesLink: label => `All guides: ${label} →`,
+    hubComingSoon: label => `Guide hub for ${label} is coming soon`,
+    guideCount: n => `${n} ${n === 1 ? "guide" : "guides"}`,
     lifeGoesOn: "Life goes on",
     moreGoodNews: "More good news →",
+    checkedPrefix: "checked",
   },
 };
+
+// Українська множина ("1 гайд" / "2 гайди" / "5 гайдів") — винятки для 11-14
+// не потрапляють у "N%10" гілку.
+function pluralizeUk(n, one, few, many) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+  return many;
+}
 
 // Хаби практичних гайдів існують поки лише для Німеччини й Польщі — для
 // решти країн у COUNTRY_ORDER просто немає запису тут, і блок гайдів
@@ -52,6 +67,16 @@ const GUIDE_HUBS = {
   de: { tag: "guide-germany", hubUrl: "https://europe.ua/dovidnyk/nimechchyna/" },
   pl: { tag: "guide-poland",  hubUrl: "https://europe.ua/dovidnyk/polshcha/" },
 };
+
+// Плитки «Корисне у вашій країні» на вкладці «Тут» — фіксовані 3 теми
+// (тема "Житло" поки не має жодного гайда в жодній країні, тому їй тут
+// плитки немає; вона все ще є в page-guide-hub.php й з'явиться сама,
+// коли для неї опублікують перший гайд).
+const HUB_TILES = [
+  { theme: "tema-legalizatsiya", title: { uk: "Документи", en: "Documents" } },
+  { theme: "tema-hroshi", title: { uk: "Робота і гроші", en: "Work & money" } },
+  { theme: "tema-povsyakdenne", title: { uk: "Школи й діти та повсякдення", en: "Schools, kids & everyday life" } },
+];
 
 // Родовий відмінок (укр.) для фрази «Всі новини ______»: назви країн у HUBS
 // стоять в називному ("Німеччина"), а тут треба "Німеччини" — тому окрема
@@ -106,7 +131,6 @@ const HUBS = {
     label: { uk: "Німеччина", en: "Germany" },
     hint: "DE",
     intro: { uk: "Життя в Німеччині: документи, Jobcenter, школи — покроково і з датами перевірки.", en: "Life in Germany: paperwork, Jobcenter, schools — step by step, with review dates." },
-    guidesFirst: true,
     news: [
       { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Німеччина", en: "Germany" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.berlin },
       { title: { uk: "Німеччина побоюється нової хвилі переїзду через скорочення виплат у Польщі", en: "Germany fears a new wave of arrivals after Poland cuts benefits" }, tag: { uk: "Німеччина", en: "Germany" }, time: { uk: "цього тижня", en: "this week" }, image: IMG.berlin },
@@ -123,7 +147,6 @@ const HUBS = {
     label: { uk: "Польща", en: "Poland" },
     hint: "PL",
     intro: { uk: "Життя в Польщі: новини громади, робота та все про поїздки додому.", en: "Life in Poland: community news, work and everything about trips home." },
-    guidesFirst: false,
     news: [
       { title: { uk: "Польща отримала право не приймати нових біженців — чинний захист зберігається", en: "Poland granted the right to stop accepting new refugees — existing protections remain" }, tag: { uk: "Польща", en: "Poland" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.warsaw },
       { title: { uk: "На переході Медика — Шегині відновили рух: деталі", en: "Traffic resumed at the Medyka–Shehyni crossing: details" }, tag: { uk: "Кордон", en: "Border" }, time: { uk: "2 год тому", en: "2h ago" }, image: IMG.medyka },
@@ -141,7 +164,6 @@ const HUBS = {
     label: { uk: "Інша країна ЄС", en: "Other EU country" },
     hint: { uk: "ЄС", en: "EU" },
     intro: { uk: "Загальне для всіх у ЄС: тимчасовий захист, банки, консульства, поїздки додому.", en: "General info for everyone in the EU: temporary protection, banks, consulates, trips home." },
-    guidesFirst: true,
     news: [
       { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Європа", en: "Europe" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.brussels },
     ],
@@ -157,7 +179,6 @@ const HUBS = {
     label: { uk: "Чехія", en: "Czech Republic" },
     hint: "CZ",
     intro: { uk: "Життя в Чехії: тимчасовий захист, реєстрація, робота та школи — головне по кроках.", en: "Life in Czechia: temporary protection, registration, work and schools — the essentials, step by step." },
-    guidesFirst: true,
     news: [
       { title: { uk: "Чехія отримала право не приймати нових біженців — чинний захист зберігається", en: "Czechia granted the right to stop accepting new refugees — existing protections remain" }, tag: { uk: "Чехія", en: "Czechia" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.prague },
       { title: { uk: "Прага розширює курси чеської мови для біженців", en: "Prague expands Czech language courses for refugees" }, tag: { uk: "Чехія", en: "Czechia" }, time: { uk: "сьогодні", en: "today" }, image: IMG.prague },
@@ -174,7 +195,6 @@ const HUBS = {
     label: { uk: "Велика Британія", en: "United Kingdom" },
     hint: "UK",
     intro: { uk: "Життя у Великій Британії: візові схеми, Universal Credit, NHS і школи.", en: "Life in the UK: visa schemes, Universal Credit, the NHS and schools." },
-    guidesFirst: false,
     news: [
       { title: { uk: "Уряд Британії підтвердив умови Ukraine Permission Extension Scheme", en: "UK government confirms terms of the Ukraine Permission Extension Scheme" }, tag: { uk: "Британія", en: "UK" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.london },
       { title: { uk: "Зміни у виплаті Universal Credit для новоприбулих", en: "Changes to Universal Credit for new arrivals" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "2 год тому", en: "2h ago" }, image: IMG.london },
@@ -192,7 +212,6 @@ const HUBS = {
     label: { uk: "Іспанія", en: "Spain" },
     hint: "ES",
     intro: { uk: "Життя в Іспанії: тимчасовий захист, empadronamiento, робота та школа.", en: "Life in Spain: temporary protection, empadronamiento, work and school." },
-    guidesFirst: true,
     news: [
       { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Іспанія", en: "Spain" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.madrid },
       { title: { uk: "Мадрид продовжує програму мовної адаптації", en: "Madrid extends the language adaptation programme" }, tag: { uk: "Іспанія", en: "Spain" }, time: { uk: "сьогодні", en: "today" }, image: IMG.madrid },
@@ -209,7 +228,6 @@ const HUBS = {
     label: { uk: "Італія", en: "Italy" },
     hint: "IT",
     intro: { uk: "Життя в Італії: тимчасовий захист, permesso di soggiorno, медицина та школа.", en: "Life in Italy: temporary protection, permesso di soggiorno, healthcare and school." },
-    guidesFirst: true,
     news: [
       { title: { uk: "Єврокомісія пропонує продовжити тимчасовий захист до березня 2028", en: "European Commission proposes extending temporary protection until March 2028" }, tag: { uk: "Італія", en: "Italy" }, time: { uk: "26.06.2026", en: "26.06.2026" }, image: IMG.rome },
       { title: { uk: "Рим спрощує подачу документів на permesso", en: "Rome simplifies permesso document submission" }, tag: { uk: "Італія", en: "Italy" }, time: { uk: "сьогодні", en: "today" }, image: IMG.rome },
@@ -226,7 +244,6 @@ const HUBS = {
     label: { uk: "Нідерланди", en: "Netherlands" },
     hint: "NL",
     intro: { uk: "Життя в Нідерландах: тимчасовий захист, BSN, житло та медична страховка.", en: "Life in the Netherlands: temporary protection, BSN, housing and health insurance." },
-    guidesFirst: true,
     news: [
       { title: { uk: "У Нідерландах українці отримують 260–350 євро на особу щомісяця плюс ~215 євро на харчування", en: "In the Netherlands Ukrainians receive €260–350 per person monthly plus about €215 for food" }, tag: { uk: "Виплати", en: "Benefits" }, time: { uk: "06.2026", en: "06.2026" }, image: IMG.amsterdam },
       { title: { uk: "Амстердам розширює програму мовних курсів", en: "Amsterdam expands its language course programme" }, tag: { uk: "Нідерланди", en: "Netherlands" }, time: { uk: "сьогодні", en: "today" }, image: IMG.amsterdam },
@@ -277,14 +294,14 @@ const el = {
   bridgeTitle: document.getElementById("bridgeTitle"),
   bridgeGrid: document.getElementById("bridgeGrid"),
   hubIntro: document.getElementById("hubIntro"),
-  hubGuidesBlock: document.getElementById("hubGuidesBlock"),
-  hubGuides: document.getElementById("hubGuides"),
-  hubGuidesMoreWrap: document.getElementById("hubGuidesMoreWrap"),
-  hubGuidesMore: document.getElementById("hubGuidesMore"),
   hubFeedBlock: document.getElementById("hubFeedBlock"),
   hubFeed: document.getElementById("hubFeed"),
   hubFeedMore: document.getElementById("hubFeedMore"),
   hubNewsTitle: document.getElementById("hubNewsTitle"),
+  hubUsefulBlock: document.getElementById("hubUsefulBlock"),
+  hubUsefulTitle: document.getElementById("hubUsefulTitle"),
+  hubUsefulGrid: document.getElementById("hubUsefulGrid"),
+  hubGuidesMore: document.getElementById("hubGuidesMore"),
   footerText: document.getElementById("footerText"),
 };
 
@@ -343,31 +360,61 @@ function formatShortDate(iso) {
   return d.toLocaleDateString(lang === "en" ? "en-GB" : "uk-UA", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
-// Гайди для вкладки «Тут» — так само реальні пости з WP, тільки відфільтровані
-// за тегом країни (guide-germany/guide-poland), а не за категорією. WP REST
-// без авторизації й так віддає лише status=publish, тому чернетки сюди не
-// потраплять самі собою.
+// Гайди країни для плиток «Корисне у вашій країні» — реальні пости з WP,
+// відфільтровані за тегом країни (guide-germany/guide-poland). WP REST без
+// авторизації й так віддає лише status=publish, тому чернетки сюди не
+// потраплять самі собою. per_page=50 — з запасом, реальних гайдів на країну
+// поки максимум 7, рахуємо теми (і найсвіжішу дату) по цьому набору клієнтськи,
+// бо REST-параметр tags= — це "АБО" по декільком id, а не "І".
 const realGuidesCache = {};
 
-function getRealGuides(tagSlug, count = 5) {
+function getRealGuides(tagSlug, count = 50) {
   if (!tagSlug) return Promise.resolve([]);
   if (!(tagSlug in realGuidesCache)) {
     realGuidesCache[tagSlug] = fetch(`${WP_REST_BASE}/wp/v2/tags&slug=${tagSlug}`)
       .then(r => (r.ok ? r.json() : []))
       .then(tags => {
         if (!tags.length) return [];
-        return fetch(`${WP_REST_BASE}/wp/v2/posts&tags=${tags[0].id}&per_page=${count}&orderby=modified&order=desc`)
+        return fetch(`${WP_REST_BASE}/wp/v2/posts&tags=${tags[0].id}&per_page=${count}`)
           .then(r => (r.ok ? r.json() : []))
-          .then(posts => posts.map(p => ({
-            title: (p.title?.rendered || "").replace(/&#8217;/g, "’").replace(/&amp;/g, "&"),
-            desc: (p.excerpt?.rendered || "").replace(/<[^>]+>/g, "").replace(/&#8217;/g, "’").replace(/&hellip;/g, "…").trim(),
-            link: p.link,
-            modified: p.modified,
-          })));
+          .then(posts => posts.map(p => ({ modified: p.modified, tags: p.tags || [] })));
       })
       .catch(() => []);
   }
   return realGuidesCache[tagSlug];
+}
+
+// Id тегів тем (Легалізація/Гроші/Повсякденне) — один запит, кешується.
+// Пост із REST вже містить масив id своїх тегів (post.tags), тому щоб
+// перевірити належність до теми, достатньо порівняти id, без другого фільтра.
+let themeTagIdsPromise = null;
+
+function getThemeTagIds() {
+  if (!themeTagIdsPromise) {
+    const slugs = HUB_TILES.map(t => t.theme).join(",");
+    themeTagIdsPromise = fetch(`${WP_REST_BASE}/wp/v2/tags&slug=${slugs}&per_page=10`)
+      .then(r => (r.ok ? r.json() : []))
+      .then(tags => {
+        const map = {};
+        tags.forEach(t => { map[t.slug] = t.id; });
+        return map;
+      })
+      .catch(() => ({}));
+  }
+  return themeTagIdsPromise;
+}
+
+// Групує гайди країни по фіксованих 3 темах: рахує кількість і бере
+// найсвіжішу дату оновлення серед них. Тема без жодного гайда просто не
+// потрапляє в результат — плитки для неї не буде.
+function buildHubTiles(guides, themeTagIds, hubUrl) {
+  return HUB_TILES.map(t => {
+    const themeId = themeTagIds[t.theme];
+    const matched = themeId ? guides.filter(g => g.tags.includes(themeId)) : [];
+    if (!matched.length) return null;
+    const latest = matched.reduce((max, g) => (new Date(g.modified) > new Date(max) ? g.modified : max), matched[0].modified);
+    return { title: t.title, count: matched.length, checked: formatShortDate(latest), href: `${hubUrl}#${t.theme}` };
+  }).filter(Boolean);
 }
 
 // ---------- Рендер ----------
@@ -420,16 +467,20 @@ function renderUkraineFeed(posts, cardFn, lifePosts) {
   return first + life + rest;
 }
 
-// Картка реального гайда — клікабельна, веде на опублікований гайд на
-// europe.ua. На відміну від новин, для гайдів нема демо-заглушки: поки
-// для країни немає жодного опублікованого гайда, .guides просто порожній.
-function realGuideCard(g) {
+// Плитка теми в «Корисне у вашій країні» — веде на хаб країни, одразу на
+// секцію цієї теми (якір з page-guide-hub.php).
+function hubTileCard(t) {
   return `
-    <a href="${g.link}" class="guide">
-      <p class="guide__title">${g.title}</p>
-      <p class="guide__desc">${g.desc}</p>
-      <div class="guide__meta"><span class="guide__badge">оновлено: ${formatShortDate(g.modified)}</span></div>
+    <a href="${t.href}" class="bridge__item bridge__item--link">
+      <strong>${tx(t.title)}</strong>
+      <span>${STRINGS[lang].guideCount(t.count)} · ${STRINGS[lang].checkedPrefix}: ${t.checked}</span>
     </a>`;
+}
+
+// Поки для країни не опубліковано жодного гайда — замість плиток одна
+// картка-заглушка на хаб, без порожніх "скоро" по кожній темі окремо.
+function hubComingSoonCard(hubUrl, label) {
+  return `<a href="${hubUrl}" class="bridge__item bridge__item--link">${STRINGS[lang].hubComingSoon(label)}</a>`;
 }
 
 function bridgeItem(b) {
@@ -462,6 +513,7 @@ function renderChrome() {
   el.feedMeta.textContent = s.feedUpdated;
   el.bridgeTitle.textContent = s.bridgeTitle;
   el.hubNewsTitle.textContent = s.localNews;
+  el.hubUsefulTitle.textContent = s.bridgeTitle;
   el.footerText.textContent = s.footer;
   el.tagline.textContent = s.tagline;
   el.ukraineFeedMore.textContent = s.allNewsLink(ALL_NEWS_LABELS.ua[lang]);
@@ -481,30 +533,20 @@ function render() {
   el.ukraineFeed.innerHTML = renderUkraineFeed(UKRAINE_NEWS, demoCard, []);
   el.bridgeGrid.innerHTML = hub.bridge.map(bridgeItem).join("");
 
-  // Країновий хаб: у деяких країнах довідник вище новин, в інших — навпаки
+  // Країновий хаб: спершу стрічка новин, нижче — «Корисне у вашій країні»
   el.hubIntro.textContent = tx(hub.intro);
   el.hubFeed.innerHTML = hub.news.map(demoCard).join("");
   el.hubFeedMore.href = `https://europe.ua/category/${CATEGORY_SLUGS[country]}/`;
   el.hubFeedMore.textContent = STRINGS[lang].allNewsLink(ALL_NEWS_LABELS[country][lang]);
 
-  // Гайди — тільки реальні опубліковані, без демо. Поки вони не підвантажені
-  // (або країна взагалі без хабу гайдів), блок лишається порожнім.
-  el.hubGuides.innerHTML = "";
+  // «Корисне у вашій країні»: плитки тем — тільки для країн із хабом гайдів.
+  // Поки дані не підвантажені, сітка лишається порожньою (без демо).
   const guideHub = GUIDE_HUBS[country];
-  el.hubGuidesMoreWrap.hidden = !guideHub;
+  el.hubUsefulBlock.hidden = !guideHub;
+  el.hubUsefulGrid.innerHTML = "";
   if (guideHub) {
     el.hubGuidesMore.href = guideHub.hubUrl;
     el.hubGuidesMore.textContent = STRINGS[lang].allGuidesLink(tx(hub.label));
-  }
-
-  const guidesBlock = el.hubGuidesBlock;
-  const newsBlock = el.hubFeedBlock;
-  const parent = guidesBlock.parentNode;
-  if (hub.guidesFirst) {
-    parent.insertBefore(guidesBlock, el.hubNewsTitle);
-  } else {
-    parent.insertBefore(newsBlock, guidesBlock);
-    parent.insertBefore(el.hubNewsTitle, newsBlock);
   }
 
   refreshRealPosts(country);
@@ -525,9 +567,25 @@ function refreshRealPosts(requestedCountry) {
   });
 
   const guideHub = GUIDE_HUBS[requestedCountry];
-  getRealGuides(guideHub?.tag).then(guides => {
+  if (!guideHub) return;
+
+  Promise.all([getRealGuides(guideHub.tag), getThemeTagIds()]).then(([guides, themeTagIds]) => {
     if (country !== requestedCountry) return;
-    if (guides.length) el.hubGuides.innerHTML = guides.map(realGuideCard).join("");
+
+    if (!guides.length) {
+      el.hubUsefulGrid.className = "useful-grid useful-grid--single";
+      el.hubUsefulGrid.innerHTML = hubComingSoonCard(guideHub.hubUrl, ALL_NEWS_LABELS[requestedCountry][lang]);
+      return;
+    }
+
+    const tiles = buildHubTiles(guides, themeTagIds, guideHub.hubUrl);
+    if (!tiles.length) {
+      el.hubUsefulGrid.className = "useful-grid useful-grid--single";
+      el.hubUsefulGrid.innerHTML = hubComingSoonCard(guideHub.hubUrl, ALL_NEWS_LABELS[requestedCountry][lang]);
+    } else {
+      el.hubUsefulGrid.className = "useful-grid";
+      el.hubUsefulGrid.innerHTML = tiles.map(hubTileCard).join("");
+    }
   });
 }
 
