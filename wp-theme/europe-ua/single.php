@@ -31,7 +31,7 @@
         <h1 class="article__title"><?php the_title(); ?></h1>
         <?php
         $author_name = get_post_meta(get_the_ID(), 'author_name', true) ?: get_the_author();
-        $author_role = get_post_meta(get_the_ID(), 'author_role', true);
+        $author_role = get_post_meta(get_the_ID(), 'author_role', true) ?: get_the_author_meta('public_role');
         ?>
         <p class="article__byline">
           <?php echo esc_html($author_name); ?><?php if ($author_role) : ?> · <?php echo esc_html($author_role); ?><?php endif; ?>

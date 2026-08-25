@@ -24,13 +24,14 @@ add_action('init', 'europe_ua_ensure_pretty_permalinks');
 // Ідемпотентно — після першого спрацювання нічого не пише повторно.
 function europe_ua_fix_admin_identity() {
     $admin = get_user_by('login', 'admin');
-    if (!$admin || $admin->display_name === 'Редакція europe.ua') return;
+    if (!$admin || $admin->display_name === 'Сорока Аліна') return;
     wp_update_user([
         'ID'           => $admin->ID,
-        'display_name' => 'Редакція europe.ua',
-        'nickname'     => 'Редакція europe.ua',
-        'description'  => 'Редакція europe.ua готує матеріали за офіційними та новинними джерелами; кожен текст перевіряє редактор перед публікацією. Детальніше — на сторінці «Редакційна політика».',
+        'display_name' => 'Сорока Аліна',
+        'nickname'     => 'Сорока Аліна',
+        'description'  => 'Головна редакторка europe.ua. Матеріали редакція готує за офіційними та новинними джерелами; кожен текст перевіряє редактор перед публікацією. Детальніше — на сторінці «Редакційна політика».',
     ]);
+    update_user_meta($admin->ID, 'public_role', 'Головна редакторка');
 }
 add_action('init', 'europe_ua_fix_admin_identity');
 
