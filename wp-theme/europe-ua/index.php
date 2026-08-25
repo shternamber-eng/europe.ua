@@ -90,6 +90,11 @@
           <a href="<?php echo esc_url(get_category_link($footer_cat->term_id)); ?>"><?php echo esc_html(europe_ua_category_label($footer_cat)); ?></a>
         <?php endforeach; ?>
       </nav>
+      <nav class="footer__categories" aria-label="Про сайт">
+        <a href="<?php echo esc_url(home_url('/pro-nas/')); ?>">Про нас</a>
+        <a href="<?php echo esc_url(home_url('/redaktsiyna-polityka/')); ?>">Редакційна політика</a>
+        <a href="<?php echo esc_url(home_url('/kontakty/')); ?>">Контакти</a>
+      </nav>
     </div>
   </footer>
 

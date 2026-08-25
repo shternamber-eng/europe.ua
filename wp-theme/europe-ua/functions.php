@@ -18,6 +18,37 @@ function europe_ua_ensure_pretty_permalinks() {
 }
 add_action('init', 'europe_ua_ensure_pretty_permalinks');
 
+// Технічний логін "admin" був публічно видимий (архів автора, RSS)
+// замість чесної редакційної ідентичності. /wp/v2/users заблокований на
+// рівні nginx, тому правимо напряму через wp_update_user(), а не REST.
+// Ідемпотентно — після першого спрацювання нічого не пише повторно.
+function europe_ua_fix_admin_identity() {
+    $admin = get_user_by('login', 'admin');
+    if (!$admin || $admin->display_name === 'Редакція europe.ua') return;
+    wp_update_user([
+        'ID'           => $admin->ID,
+        'display_name' => 'Редакція europe.ua',
+        'nickname'     => 'Редакція europe.ua',
+        'description'  => 'Редакція europe.ua готує матеріали за офіційними та новинними джерелами; кожен текст перевіряє редактор перед публікацією. Детальніше — на сторінці «Редакційна політика».',
+    ]);
+}
+add_action('init', 'europe_ua_fix_admin_identity');
+
+// Автор конкретної статті (наприклад, окремий автор по країні) — окреме
+// поле поста, не пов'язане з системним логіном WP. Порожнє за замовчуванням;
+// hromada-bot заповнить, коли з'являться реальні імена авторів по країнах.
+function europe_ua_register_author_meta() {
+    foreach (['author_name', 'author_role'] as $meta_key) {
+        register_post_meta('post', $meta_key, [
+            'type'          => 'string',
+            'single'        => true,
+            'show_in_rest'  => true,
+            'auth_callback' => fn() => current_user_can('edit_posts'),
+        ]);
+    }
+}
+add_action('init', 'europe_ua_register_author_meta');
+
 // Категорії країн створює бот (hromada-bot) через REST API і часто лишає
 // їм технічну назву = slug (напр. "nimechchyna"), бо йому це байдуже. Тут —
 // людські назви для футера сайту; для невідомого slug'а показуємо як є.

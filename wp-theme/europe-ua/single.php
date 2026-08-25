@@ -29,11 +29,22 @@
           ?>
         </p>
         <h1 class="article__title"><?php the_title(); ?></h1>
+        <?php
+        $author_name = get_post_meta(get_the_ID(), 'author_name', true) ?: get_the_author();
+        $author_role = get_post_meta(get_the_ID(), 'author_role', true);
+        ?>
+        <p class="article__byline">
+          <?php echo esc_html($author_name); ?><?php if ($author_role) : ?> · <?php echo esc_html($author_role); ?><?php endif; ?>
+        </p>
         <?php if (has_post_thumbnail()) : ?>
           <div class="article__image"><?php the_post_thumbnail('large'); ?></div>
         <?php endif; ?>
         <div class="article__content">
           <?php the_content(); ?>
+        </div>
+        <div class="article__author-box">
+          <p><strong><?php echo esc_html($author_name); ?></strong><?php if ($author_role) : ?>, <?php echo esc_html($author_role); ?><?php endif; ?></p>
+          <p><?php echo esc_html(get_the_author_meta('description')); ?></p>
         </div>
       </article>
     <?php endwhile; endif; ?>
@@ -44,6 +55,11 @@
   <footer class="footer">
     <div class="container">
       <p>europe.ua · твоя громада, де б ти не був</p>
+      <nav class="footer__categories" aria-label="Про сайт">
+        <a href="<?php echo esc_url(home_url('/pro-nas/')); ?>">Про нас</a>
+        <a href="<?php echo esc_url(home_url('/redaktsiyna-polityka/')); ?>">Редакційна політика</a>
+        <a href="<?php echo esc_url(home_url('/kontakty/')); ?>">Контакти</a>
+      </nav>
     </div>
   </footer>
 

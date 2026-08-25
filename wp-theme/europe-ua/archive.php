@@ -40,6 +40,11 @@
   <footer class="footer">
     <div class="container">
       <p>europe.ua · твоя громада, де б ти не був</p>
+      <nav class="footer__categories" aria-label="Про сайт">
+        <a href="<?php echo esc_url(home_url('/pro-nas/')); ?>">Про нас</a>
+        <a href="<?php echo esc_url(home_url('/redaktsiyna-polityka/')); ?>">Редакційна політика</a>
+        <a href="<?php echo esc_url(home_url('/kontakty/')); ?>">Контакти</a>
+      </nav>
     </div>
   </footer>
 

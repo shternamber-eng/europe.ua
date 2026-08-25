@@ -506,8 +506,21 @@ body {
   margin-bottom: 16px;
 }
 
+.article__byline { font-size: 13px; color: var(--text-2); margin-bottom: 16px; }
+
 .article__image { margin-bottom: 20px; border-radius: var(--radius); overflow: hidden; }
 .article__image img { width: 100%; height: auto; display: block; }
+
+.article__author-box {
+  margin-top: 28px;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 13.5px;
+  color: var(--text-2);
+}
+.article__author-box p { margin: 0; }
+.article__author-box p + p { margin-top: 6px; }
 
 .article__content { font-size: 16px; line-height: 1.7; }
 .article__content h2 {
