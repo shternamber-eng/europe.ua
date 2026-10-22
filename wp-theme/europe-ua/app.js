@@ -333,18 +333,50 @@ function getRealPosts(slug, count = 5) {
         if (!cats.length) return [];
         return fetch(`${WP_REST_BASE}/wp/v2/posts&categories=${cats[0].id}&per_page=${count}&_embed`)
           .then(r => (r.ok ? r.json() : []))
-          .then(posts => posts.map(p => ({
-            title: (p.title?.rendered || "").replace(/&#8217;/g, "’").replace(/&amp;/g, "&"),
-            link: p.link,
-            date: p.date,
-            image: p._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes?.medium?.source_url
-              || p._embedded?.["wp:featuredmedia"]?.[0]?.source_url
-              || null,
-          })));
+          .then(posts => posts.map(mapPost));
       })
       .catch(() => []);
   }
   return realPostsCache[slug];
+}
+
+function mapPost(p) {
+  return {
+    title: (p.title?.rendered || "").replace(/&#8217;/g, "’").replace(/&amp;/g, "&"),
+    link: p.link,
+    date: p.date,
+    image: p._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes?.medium?.source_url
+      || p._embedded?.["wp:featuredmedia"]?.[0]?.source_url
+      || null,
+  };
+}
+
+// Закріплені в WordPress пости («Прикріпити на головній») — окремою
+// виділеною карткою над стрічкою «Україна», незалежно від дати.
+let stickyPostsPromise = null;
+
+function getStickyPosts(count = 3) {
+  if (!stickyPostsPromise) {
+    stickyPostsPromise = fetch(`${WP_REST_BASE}/wp/v2/posts&sticky=true&per_page=${count}&_embed`)
+      .then(r => (r.ok ? r.json() : []))
+      .then(posts => posts.map(mapPost))
+      .catch(() => []);
+  }
+  return stickyPostsPromise;
+}
+
+function pinnedCard(post) {
+  const imgBlock = post.image
+    ? `<div class="card__img"><img src="${post.image}" alt="${post.title.replace(/"/g, "&quot;")}" loading="lazy"></div>`
+    : "";
+  return `
+    <a href="${post.link}" class="card card--pinned">
+      ${imgBlock}
+      <div>
+        <p class="card__title">${post.title}</p>
+        <p class="card__meta"><span class="card__tag">📌 ${lang === "en" ? "Pinned" : "Закріплено"}</span> · ${formatPostDate(post.date)}</p>
+      </div>
+    </a>`;
 }
 
 function formatPostDate(iso) {
@@ -556,8 +588,11 @@ function render() {
 // категорії вже є хоч один опублікований матеріал. Захист від «гонки» —
 // застосовуємо результат, тільки якщо користувач не встиг перемкнути країну.
 function refreshRealPosts(requestedCountry) {
-  Promise.all([getRealPosts(CATEGORY_SLUGS.ua), getRealPosts(LIFE_CATEGORY_SLUG, 3)]).then(([posts, lifePosts]) => {
-    if (posts.length) el.ukraineFeed.innerHTML = renderUkraineFeed(posts, realCard, lifePosts);
+  Promise.all([getRealPosts(CATEGORY_SLUGS.ua), getRealPosts(LIFE_CATEGORY_SLUG, 3), getStickyPosts()]).then(([posts, lifePosts, pinned]) => {
+    if (!posts.length && !pinned.length) return;
+    const pinnedLinks = new Set(pinned.map(p => p.link));
+    const feed = posts.filter(p => !pinnedLinks.has(p.link));
+    el.ukraineFeed.innerHTML = pinned.map(pinnedCard).join("") + renderUkraineFeed(feed, realCard, lifePosts);
   });
 
   const slug = CATEGORY_SLUGS[requestedCountry];
