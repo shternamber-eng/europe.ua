@@ -138,3 +138,17 @@ function europe_ua_jsonld_publisher($data, $jsonld) {
     return $data;
 }
 add_filter('rank_math/json_ld', 'europe_ua_jsonld_publisher', 99, 2);
+
+/**
+ * Rank Math сам не скидає кеш карти сайту, коли бот публікує пост через
+ * REST, тож карта «застигає». Скидаємо кеш при кожній публікації/зміні
+ * опублікованого поста — Rank Math перебудує карту при наступному запиті.
+ */
+function europe_ua_invalidate_sitemap_on_publish($new_status, $old_status, $post) {
+    if ($post->post_type !== 'post') return;
+    if ($new_status !== 'publish' && $old_status !== 'publish') return;
+    if (class_exists('\RankMath\Sitemap\Cache') && method_exists('\RankMath\Sitemap\Cache', 'invalidate_storage')) {
+        \RankMath\Sitemap\Cache::invalidate_storage();
+    }
+}
+add_action('transition_post_status', 'europe_ua_invalidate_sitemap_on_publish', 20, 3);
