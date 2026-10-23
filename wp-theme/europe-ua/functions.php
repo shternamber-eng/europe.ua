@@ -75,3 +75,28 @@ function europe_ua_enqueue_assets() {
     wp_enqueue_script('europe-ua-app', get_template_directory_uri() . '/app.js', [], wp_get_theme()->get('Version'), true);
 }
 add_action('wp_enqueue_scripts', 'europe_ua_enqueue_assets');
+
+/**
+ * Адмінка: список записів. Плагіни (Rank Math, лічильник переглядів) додають
+ * багато колонок, і назві лишається вузька смужка — текст ламається по буквах.
+ * Даємо назві основну ширину, решті колонок — компактну.
+ */
+function europe_ua_admin_posts_list_css() {
+    $screen = get_current_screen();
+    if (!$screen || $screen->base !== 'edit') return;
+    echo '<style>
+@media screen and (min-width: 783px) {
+  .wp-list-table .column-title { width: 34%; }
+  .wp-list-table .column-author { width: 9%; }
+  .wp-list-table .column-categories { width: 9%; }
+  .wp-list-table .column-tags { width: 9%; }
+  .wp-list-table .column-comments { width: 4em; }
+  .wp-list-table .column-date { width: 10%; }
+  .wp-list-table th[class*="view"], .wp-list-table td[class*="view"],
+  .wp-list-table th.column-stats, .wp-list-table td.column-stats { width: 5em; }
+  .wp-list-table .column-rank_math_seo_details { width: 16%; }
+  .wp-list-table .column-title .row-title { word-break: normal; overflow-wrap: break-word; }
+}
+</style>';
+}
+add_action('admin_head', 'europe_ua_admin_posts_list_css');
