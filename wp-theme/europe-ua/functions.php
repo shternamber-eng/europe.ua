@@ -100,3 +100,41 @@ function europe_ua_admin_posts_list_css() {
 </style>';
 }
 add_action('admin_head', 'europe_ua_admin_posts_list_css');
+
+/**
+ * Rank Math: карта сайту застигла на 2026-10-16 (нові пости не потрапляли
+ * в post-sitemap*.xml). Одноразово скидаємо кеш карти сайту; Rank Math
+ * перебудує її при наступному запиті.
+ */
+function europe_ua_flush_rank_math_sitemap_once() {
+    if (get_option('europe_ua_sitemap_flush_20261023')) return;
+    if (class_exists('\RankMath\Sitemap\Cache') && method_exists('\RankMath\Sitemap\Cache', 'invalidate_storage')) {
+        \RankMath\Sitemap\Cache::invalidate_storage();
+    }
+    update_option('europe_ua_sitemap_flush_20261023', time(), false);
+}
+add_action('init', 'europe_ua_flush_rank_math_sitemap_once', 99);
+
+/**
+ * Rank Math JSON-LD: видавець — організація з логотипом (вимога Google для
+ * NewsArticle), а не «Person/Organization» без логотипа.
+ */
+function europe_ua_jsonld_publisher($data, $jsonld) {
+    if (!is_array($data)) return $data;
+    $logo = function_exists('get_site_icon_url') ? get_site_icon_url(512) : '';
+    if (!$logo) $logo = get_template_directory_uri() . '/logo-flag.png';
+    foreach ($data as $key => $entity) {
+        if (!is_array($entity) || empty($entity['@id'])) continue;
+        if (substr($entity['@id'], -strlen('#person')) !== '#person') continue;
+        $data[$key]['@type'] = 'Organization';
+        $data[$key]['name'] = 'Europe.ua';
+        $data[$key]['url'] = home_url('/');
+        $data[$key]['logo'] = [
+            '@type' => 'ImageObject',
+            '@id'   => home_url('/#logo'),
+            'url'   => $logo,
+        ];
+    }
+    return $data;
+}
+add_filter('rank_math/json_ld', 'europe_ua_jsonld_publisher', 99, 2);
